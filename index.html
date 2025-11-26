@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق القيمين الدينيين</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+            background: #f4f6f8;
+            color: #444;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-primary { background: #1976d2; color: white; }
+        .btn-warning { background: #ff9800; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-success { background: #4caf50; color: white; }
+
+        .status-bar {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #1976d2;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .no-data, .loading {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            color: #1976d2;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>تطبيق إدارة القيمين الدينيين</h1>
+            <p>إدارة بيانات القيمين الدينيين بسهولة وأمان</p>
+            
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="ابحث في البيانات...">
+                </div>
+                <button class="btn-primary" id="refreshBtn">تحديث البيانات</button>
+                <button class="btn-success" id="testBtn">بيانات تجريبية</button>
+            </div>
+        </header>
+
+        <div class="status-bar">
+            <div id="status">جاري تحميل البيانات...</div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <tbody id="tableBody">
+                    <tr>
+                        <td class="loading">جاري تحميل البيانات...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">تعديل بيانات القيم</h3>
+                <button class="close-modal" id="closeEditModal">&times;</button>
+            </div>
+            <form id="editForm">
+                <div id="formFields"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn-danger" id="cancelEdit">إلغاء</button>
+                    <button type="submit" class="btn-success" id="saveEdit">حفظ التعديلات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbylfd-lCAvii6zxd4Eoivm69shNP6yUtAAThaf9RV2KaO9rDU2uAjedscfAEcEeSt1p/exec";
+
+        const sampleData = [
+            { 
+                _row: 1, 
+                "الاسم": "أحمد محمد",
+                "الجهة": "المندوبية الجهوية للشؤون الإسلامية بجهة فاس مكناس",
+                "الجماعة": "مكناس",
+                "وضعية القيم الديني": "مكلف",
+                "المسجد مفتوح أم مغلق": "مفتوح",
+                "الجنس": "ذكر",
+                "الحالة العائلية": "متزوج",
+                "عدد الزوجات": "1",
+                "المهنة": "رجل التعليم"
+            },
+            { 
+                _row: 2, 
+                "الاسم": "فاطمة الزهراء",
+                "الجهة": "المندوبية الجهوية للشؤون الإسلامية بجهة الرباط سلا القنيطرة",
+                "الجماعة": "سلا",
+                "وضعية القيم الديني": "غير مكلف",
+                "المسجد مفتوح أم مغلق": "مغلق",
+                "الجنس": "أنثى",
+                "الحالة العائلية": "عازب(ة)",
+                "عدد الزوجات": "0",
+                "المهنة": "مستشار محو الأمية"
+            }
+        ];
+
+        const dropdownOptions = {
+            'الجهة': ['المندوبية الجهوية للشؤون الإسلامية بجهة فاس مكناس', 'المندوبية الجهوية للشؤون الإسلامية بجهة الرباط سلا القنيطرة'],
+            'الجماعة': ['مكناس', 'سلا', 'الرباط'],
+            'وضعية القيم الديني': ['مكلف', 'غير مكلف'],
+            'المسجد مفتوح أم مغلق': ['مفتوح', 'مغلق'],
+            'الجنس': ['ذكر', 'أنثى'],
+            'الحالة العائلية': ['مطلق(ة)', 'متزوج(ة)', 'عازب(ة)', 'أرمل(ة)'],
+            'عدد الزوجات': ['0', '1', '2', '3', '4'],
+            'المهنة': ['أجير', 'تاجر', 'رجل التعليم', 'مستشار محو الأمية', 'طبيب', 'مهندس']
+        };
+
+        let allData = [];
+        let filteredData = [];
+        let currentEditingRow = null;
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            
+            if (!filteredData.length) {
+                tableBody.innerHTML = '<tr><td class="no-data">لا توجد بيانات لعرضها</td></tr>';
+                return;
+            }
+
+            const headers = Object.keys(filteredData[0]).filter(key => key !== '_row');
+            
+            let html = '<tr>';
+            headers.forEach(header => {
+                html += `<th>${header}</th>`;
+            });
+            html += '<th>الإجراءات</th></tr>';
+
+            filteredData.forEach((item, index) => {
+                const rowId = item._row || index;
+                
+                html += `<tr>`;
+                headers.forEach(header => {
+                    const value = item[header] != null ? item[header] : '';
+                    const displayValue = value.length > 20 ? value.substring(0, 20) + '...' : value;
+                    html += `<td title="${value}">${displayValue}</td>`;
+                });
+                html += `
+                    <td class="actions">
+                        <button class="btn-warning" onclick="openEditModal(${rowId})">تعديل</button>
+                        <button class="btn-danger" onclick="deleteRow(${rowId})">حذف</button>
+                    </td>
+                `;
+                html += '</tr>';
+            });
+
+            tableBody.innerHTML = html;
+        }
+
+        function openEditModal(rowId) {
+            const row = allData.find(item => item._row == rowId || allData.indexOf(item) === rowId);
+            
+            if (!row) {
+                alert('لم يتم العثور على السجل');
+                return;
+            }
+
+            currentEditingRow = rowId;
+            
+            const headers = Object.keys(row).filter(key => key !== '_row');
+            const formFields = document.getElementById('formFields');
+            formFields.innerHTML = '';
+            
+            headers.forEach(header => {
+                const value = row[header] != null ? row[header] : '';
+                
+                if (dropdownOptions[header]) {
+                    let optionsHTML = '';
+                    dropdownOptions[header].forEach(option => {
+                        const selected = option === value ? 'selected' : '';
+                        optionsHTML += `<option value="${option}" ${selected}>${option}</option>`;
+                    });
+                    
+                    formFields.innerHTML += `
+                        <div class="form-group">
+                            <label>${header}</label>
+                            <select name="${header}">
+                                <option value="">-- اختر ${header} --</option>
+                                ${optionsHTML}
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    formFields.innerHTML += `
+                        <div class="form-group">
+                            <label>${header}</label>
+                            <input type="text" name="${header}" value="${value}">
+                        </div>
+                    `;
+                }
+            });
+
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        async function saveEdit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(document.getElementById('editForm'));
+            const updatedData = {};
+            
+            const originalRow = allData.find(item => item._row == currentEditingRow || allData.indexOf(item) === currentEditingRow);
+            
+            if (!originalRow) return;
+            
+            const headers = Object.keys(originalRow).filter(key => key !== '_row');
+            
+            headers.forEach(header => {
+                updatedData[header] = formData.get(header) || '';
+            });
+
+            try {
+                const rowIndex = allData.findIndex(item => item._row == currentEditingRow || allData.indexOf(item) === currentEditingRow);
+                
+                if (rowIndex !== -1) {
+                    allData[rowIndex] = { ...allData[rowIndex], ...updatedData };
+                    filteredData = [...allData];
+                    renderTable();
+                    
+                    const syncResult = await syncWithServer('update', currentEditingRow, updatedData);
+                    
+                    if (syncResult.success) {
+                        updateStatus('تم حفظ التعديلات بنجاح');
+                    } else {
+                        updateStatus('تم الحفظ محلياً');
+                    }
+                }
+
+                closeEditModal();
+                
+            } catch (error) {
+                updateStatus('خطأ في حفظ التعديلات');
+            }
+        }
+
+        async function syncWithServer(action, rowId, data = null) {
+            try {
+                const payload = { action: action, row: rowId };
+                if (data) payload.data = data;
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error(`خطأ: ${response.status}`);
+                
+                const result = await response.json();
+                return { success: true, data: result };
+                
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditingRow = null;
+        }
+
+        async function deleteRow(rowId) {
+            if (!confirm('هل أنت متأكد من الحذف؟')) return;
+
+            try {
+                allData = allData.filter(item => !(item._row == rowId || allData.indexOf(item) === rowId));
+                filteredData = [...allData];
+                renderTable();
+
+                await syncWithServer('delete', rowId);
+                updateStatus('تم حذف السجل بنجاح');
+                
+            } catch (error) {
+                updateStatus('خطأ في حذف السجل');
+            }
+        }
+
+        function searchData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredData = allData.filter(item => 
+                Object.values(item).some(value => 
+                    value && value.toString().toLowerCase().includes(searchTerm)
+                )
+            );
+            renderTable();
+        }
+
+        async function loadRealData() {
+            try {
+                updateStatus('جاري تحميل البيانات...');
+                const response = await fetch(API_URL + '?t=' + Date.now());
+                
+                if (!response.ok) throw new Error(`خطأ: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data && Array.isArray(data) && data.length > 0) {
+                    allData = data;
+                    filteredData = [...data];
+                    updateStatus(`تم تحميل ${data.length} سجل`);
+                    renderTable();
+                } else {
+                    throw new Error('لا توجد بيانات');
+                }
+                
+            } catch (error) {
+                updateStatus(`خطأ - استخدام بيانات تجريبية`);
+                allData = sampleData;
+                filteredData = [...sampleData];
+                renderTable();
+            }
+        }
+
+        function useSampleData() {
+            allData = sampleData;
+            filteredData = [...sampleData];
+            updateStatus('تم تحميل البيانات التجريبية');
+            renderTable();
+        }
+
+        // إعداد الأحداث
+        document.getElementById('searchInput').addEventListener('input', searchData);
+        document.getElementById('refreshBtn').addEventListener('click', loadRealData);
+        document.getElementById('testBtn').addEventListener('click', useSampleData);
+        document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+        document.getElementById('cancelEdit').addEventListener('click', closeEditModal);
+        document.getElementById('editForm').addEventListener('submit', saveEdit);
+
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        // بدء التطبيق
+        loadRealData();
+    </script>
+</body>
+</html>
