@@ -69,7 +69,7 @@
             overflow: hidden;
         }
 
-        /* ===== شاشة تسجيل الدخول - متجاوبة ===== */
+        /* ===== شاشة تسجيل الدخول ===== */
         .login-container {
             max-width: 480px;
             margin: 80px auto;
@@ -121,7 +121,7 @@
             cursor: pointer;
         }
 
-        /* ===== شريط العنوان العلوي - متجاوب ===== */
+        /* ===== شريط العنوان العلوي ===== */
         .title-bar {
             background: var(--primary);
             padding: 12px 20px;
@@ -199,7 +199,7 @@
             gap: 6px;
         }
 
-        /* ===== شريط التبويبات - متجاوب ===== */
+        /* ===== شريط التبويبات ===== */
         .tab-bar {
             background: white;
             border-bottom: 1px solid var(--gray-200);
@@ -254,147 +254,286 @@
             white-space: nowrap;
         }
 
-        /* ===== شريط الملفات - متجاوب ===== */
-        .files-bar {
+        /* ===== صفحة اختيار الملفات والأوراق - الصفحة الرئيسية ===== */
+        .selection-page {
+            flex: 1;
+            overflow-y: auto;
             background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
-        }
-
-        .files-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--gray-700);
-            font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .files-list {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            overflow-x: auto;
-            padding-bottom: 2px;
+            padding: 20px;
             -webkit-overflow-scrolling: touch;
         }
 
-        .file-tab {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
+        .selection-section {
             background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
         }
 
-        .file-tab.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* ===== شريط الأوراق - متجاوب ===== */
-        .sheets-bar {
-            background: white;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 10px 16px;
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
+            gap: 12px;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 16px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
         }
 
-        .sheets-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--gray-700);
-            font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .sheets-list {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .sheet-tab {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 14px;
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 600;
+        .file-card {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
             cursor: pointer;
-            white-space: nowrap;
+            transition: all 0.3s;
+            position: relative;
         }
 
-        .sheet-tab.active {
-            background: var(--primary);
-            color: white;
+        .file-card:hover {
             border-color: var(--primary);
+            background: var(--gray-100);
         }
 
-        .add-sheet-btn {
+        .file-card.active {
+            border-color: var(--primary);
+            background: #e6f7ed;
+        }
+
+        .file-card-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .file-card-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .file-card-info {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .file-delete-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            border: 2px dashed var(--gray-300);
-            background: transparent;
+            background: var(--danger);
+            color: white;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--gray-500);
-            flex-shrink: 0;
+            opacity: 0.8;
         }
 
-        /* ===== شريط الأدوات - متجاوب ===== */
-        .toolbar {
+        .sheets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .sheet-card {
             background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .sheet-card:hover {
+            border-color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        .sheet-card.active {
+            border-color: var(--primary);
+            background: #e6f7ed;
+        }
+
+        .sheet-card-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sheet-card-info {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .add-card {
+            background: var(--gray-50);
+            border: 2px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            min-height: 150px;
+        }
+
+        .add-card:hover {
+            border-color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        .add-card i {
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .add-card span {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .open-table-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .open-table-btn:disabled {
+            background: var(--gray-300);
+            cursor: not-allowed;
+        }
+
+        /* ===== صفحة الجدول المستقلة - ملء الشاشة ===== */
+        .table-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .table-page.active {
+            display: flex;
+        }
+
+        .table-header {
+            background: var(--primary);
             padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            justify-content: space-between;
             flex-shrink: 0;
+            color: white;
         }
 
-        .tool-group {
+        .table-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .table-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .table-title-main {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .table-title-sub {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .table-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-action-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* ===== شريط الأدوات للجدول ===== */
+        .table-toolbar {
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 10px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            flex-shrink: 0;
         }
 
         .tool-btn {
             padding: 8px 14px;
             border: none;
             border-radius: 10px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -408,14 +547,14 @@
         .btn-success { background: var(--success); }
         .btn-danger { background: var(--danger); }
 
-        /* ===== لوحة تحكم المدير - متجاوبة ===== */
+        /* ===== لوحة تحكم المدير ===== */
         .permissions-panel {
             background: linear-gradient(135deg, #f0f9ff 0%, #e6f2ff 100%);
             border-bottom: 2px solid var(--primary);
-            padding: 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
             flex-shrink: 0;
         }
@@ -423,33 +562,32 @@
         .permissions-title {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--gray-800);
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .permission-toggle {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             background: white;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 40px;
             border: 2px solid var(--gray-200);
-            flex-wrap: wrap;
         }
 
         .permission-toggle span {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--gray-700);
         }
 
         .toggle-switch {
             position: relative;
-            width: 48px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             background: var(--gray-300);
             border-radius: 50px;
             cursor: pointer;
@@ -461,8 +599,8 @@
 
         .toggle-slider {
             position: absolute;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             background: white;
             border-radius: 50%;
             top: 2px;
@@ -471,28 +609,18 @@
         }
 
         .toggle-switch.active .toggle-slider {
-            right: 24px;
+            right: 22px;
         }
 
-        /* ===== منطقة الجدول - سكرول محسن للهاتف ===== */
-        .workspace {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-            background: white;
-        }
-
+        /* ===== منطقة الجدول ===== */
         .table-container {
             flex: 1;
             overflow: auto !important;
             position: relative;
             min-height: 0;
-            -webkit-overflow-scrolling: touch; /* سكرول سلس للهاتف */
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* سكرول مخصص - أصغر للهاتف */
         .table-container::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -545,7 +673,7 @@
             min-width: 50px;
         }
 
-        /* ===== إدارة المستخدمين - متجاوبة ===== */
+        /* ===== إدارة المستخدمين ===== */
         .users-container {
             padding: 20px;
             overflow-y: auto;
@@ -587,7 +715,7 @@
 
         .user-item {
             background: white;
-            padding: 16px;
+            padding: 20px;
             border-radius: 12px;
             margin-bottom: 12px;
             display: flex;
@@ -597,7 +725,7 @@
             gap: 12px;
         }
 
-        /* ===== سجل التعديلات - متجاوب ===== */
+        /* ===== سجل التعديلات ===== */
         .logs-container {
             padding: 20px;
             overflow-y: auto;
@@ -627,7 +755,7 @@
             border-bottom: 1px solid var(--gray-200);
         }
 
-        /* ===== النسخ الاحتياطية - متجاوبة ===== */
+        /* ===== النسخ الاحتياطية ===== */
         .backups-container {
             padding: 20px;
             overflow-y: auto;
@@ -708,33 +836,35 @@
             display: none;
             align-items: center;
             gap: 12px;
-            z-index: 9999;
+            z-index: 99999;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-width: 400px;
             margin: 0 auto;
         }
 
-        /* ===== تحسينات الهاتف المحمول - الأهم هنا ===== */
+        /* ===== تحسينات الهاتف المحمول ===== */
         @media (max-width: 1024px) {
             .add-user-form {
                 grid-template-columns: 1fr 1fr;
             }
+            
+            .files-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
-            /* تقليل المسافات */
             body {
-                padding: 10px;
+                padding: 0;
             }
             
             .app-wrapper {
-                height: calc(100vh - 20px);
-                border-radius: 16px;
+                height: 100vh;
+                border-radius: 0;
             }
             
-            /* شاشة تسجيل الدخول */
             .login-container {
-                margin: 40px auto;
+                margin: 40px 20px;
                 padding: 32px 24px;
             }
             
@@ -746,7 +876,6 @@
                 font-size: 56px;
             }
             
-            /* الشريط العلوي */
             .title-bar {
                 padding: 10px 16px;
             }
@@ -756,64 +885,43 @@
             }
             
             .user-email {
-                display: none; /* إخفاء الإيميل في الهاتف */
+                display: none;
             }
             
-            /* شريط التبويبات */
             .tab {
                 padding: 10px 14px;
                 font-size: 13px;
             }
             
-            /* شريط الملفات والأوراق */
-            .files-bar, .sheets-bar {
+            .selection-page {
+                padding: 16px;
+            }
+            
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sheets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .table-toolbar {
                 padding: 8px 12px;
-            }
-            
-            .file-tab, .sheet-tab {
-                padding: 5px 12px;
-                font-size: 12px;
-            }
-            
-            /* شريط الأدوات */
-            .toolbar {
-                padding: 10px 12px;
             }
             
             .tool-btn {
                 padding: 6px 12px;
-                font-size: 12px;
+                font-size: 11px;
             }
             
-            /* لوحة الصلاحيات */
             .permissions-panel {
-                padding: 12px;
+                padding: 10px 12px;
             }
             
             .permission-toggle {
-                padding: 6px 12px;
-                gap: 8px;
+                padding: 5px 10px;
             }
             
-            .permission-toggle span {
-                font-size: 12px;
-            }
-            
-            .toggle-switch {
-                width: 44px;
-                height: 24px;
-            }
-            
-            .toggle-slider {
-                width: 20px;
-                height: 20px;
-            }
-            
-            .toggle-switch.active .toggle-slider {
-                right: 22px;
-            }
-            
-            /* الجدول */
             th, td {
                 padding: 8px;
                 font-size: 12px;
@@ -824,33 +932,18 @@
                 min-width: 45px;
             }
             
-            /* إدارة المستخدمين */
             .users-container, .logs-container, .backups-container {
                 padding: 16px;
             }
             
             .users-header h2, .logs-header h2, .backups-header h2 {
                 font-size: 22px;
-                margin-bottom: 20px;
             }
             
             .add-user-form {
                 grid-template-columns: 1fr;
             }
             
-            .add-user-card, .users-list, .logs-list, .backups-list {
-                padding: 16px;
-            }
-            
-            .user-item, .backup-item {
-                padding: 14px;
-            }
-            
-            .backup-details {
-                gap: 12px;
-            }
-            
-            /* سكرول مخصص أصغر للهاتف */
             .table-container::-webkit-scrollbar {
                 width: 6px;
                 height: 6px;
@@ -858,9 +951,8 @@
         }
 
         @media (max-width: 480px) {
-            /* شاشات صغيرة جداً */
             .excel-logo span {
-                display: none; /* إخفاء النص في الشاشات الصغيرة */
+                display: none;
             }
             
             .excel-logo i {
@@ -872,12 +964,8 @@
                 font-size: 12px;
             }
             
-            .tab i {
-                font-size: 14px;
-            }
-            
             .tool-btn span {
-                display: none; /* إخفاء نص الأزرار */
+                display: none;
             }
             
             .tool-btn i {
@@ -886,56 +974,23 @@
             
             .tool-btn {
                 padding: 8px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
             }
             
             .permission-toggle span:first-child {
-                display: none; /* إخفاء النص الطويل */
+                display: none;
             }
             
-            .permission-status {
-                font-size: 12px;
-            }
-            
-            .backup-details {
-                flex-direction: column;
-                gap: 6px;
-            }
-            
-            .notification {
-                left: 16px;
-                right: 16px;
-                padding: 12px 16px;
-                font-size: 13px;
+            .table-title-sub {
+                display: none;
             }
         }
 
-        /* تحسين اللمس للهاتف */
         @media (hover: none) and (pointer: coarse) {
-            .file-tab, .sheet-tab, .tool-btn, .tab, .add-sheet-btn {
-                min-height: 44px; /* حجم مناسب للمس */
-            }
-            
-            .file-tab i, .sheet-tab i {
-                font-size: 16px;
-            }
-        }
-
-        /* دعم الوضع الأفقي */
-        @media (orientation: landscape) and (max-height: 600px) {
-            .app-wrapper {
-                height: calc(100vh - 20px);
-            }
-            
-            .title-bar {
-                padding: 8px 16px;
-            }
-            
-            .tabs {
-                padding: 4px 0;
-            }
-            
-            .tab {
-                padding: 8px 16px;
+            .file-card, .sheet-card, .tool-btn, .tab, .add-card {
+                min-height: 44px;
             }
         }
     </style>
@@ -1005,8 +1060,29 @@
         <div id="dynamicContent" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;"></div>
     </div>
 
+    <!-- صفحة الجدول المستقلة -->
+    <div id="tablePage" class="table-page">
+        <div class="table-header">
+            <div class="table-header-left">
+                <button class="back-btn" onclick="closeTablePage()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="table-title">
+                    <div class="table-title-main" id="tablePageFileName">الملف الرئيسي</div>
+                    <div class="table-title-sub" id="tablePageSheetName">ورقة1</div>
+                </div>
+            </div>
+            <div class="table-actions" id="tablePageActions"></div>
+        </div>
+        
+        <div id="tablePageToolbar"></div>
+        <div id="tablePagePermissions"></div>
+        
+        <div class="table-container" id="tablePageContainer"></div>
+    </div>
+
     <!-- نافذة إضافة ورقة -->
-    <div id="addSheetModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 10000;">
+    <div id="addSheetModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 100000;">
         <div style="background: white; padding: 24px; border-radius: 16px; width: 90%; max-width: 500px; margin: 20px;">
             <h3 style="margin-bottom: 20px;"><i class="fas fa-plus-circle" style="color: var(--success);"></i> إضافة ورقة جديدة</h3>
             <input type="text" id="newSheetNameInput" class="login-input" placeholder="اسم الورقة">
@@ -1049,7 +1125,6 @@
         let sheetsCache = {};
         let dataCache = {};
         
-        // صلاحيات المستخدمين
         let userPermissions = {
             view: true,
             edit: false
@@ -1146,7 +1221,7 @@
             document.getElementById('uploadButtonContainer').style.display = isAdmin ? 'block' : 'none';
             
             if (document.getElementById('dynamicContent')) {
-                renderExcelInterface();
+                renderSelectionPage();
             }
         }
 
@@ -1186,8 +1261,7 @@
             if (sheetsCache[fileId]) {
                 sheets = sheetsCache[fileId];
                 currentSheet = Object.keys(sheets)[0];
-                renderExcelInterface();
-                loadSheetData(currentSheet);
+                renderSelectionPage();
                 return;
             }
             
@@ -1209,8 +1283,7 @@
                 }
                 
                 currentSheet = Object.keys(sheets)[0];
-                renderExcelInterface();
-                loadSheetData(currentSheet);
+                renderSelectionPage();
             });
         }
 
@@ -1228,196 +1301,226 @@
             db.ref(`sheetData/${sheetId}`).set(initialData);
         }
 
-        // ==================== واجهة Excel الرئيسية ====================
-        function renderExcelInterface() {
+        // ==================== صفحة اختيار الملفات والأوراق ====================
+        function renderSelectionPage() {
             const content = document.getElementById('dynamicContent');
             if (!content) return;
             
             const isAdmin = currentUserRole === 'admin';
+            const canView = userPermissions.view;
+            
+            if (!canView && !isAdmin) {
+                content.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: var(--gray-50);">
+                        <div style="text-align: center; padding: 30px;">
+                            <i class="fas fa-lock" style="font-size: 48px; color: var(--gray-400); margin-bottom: 16px;"></i>
+                            <h3 style="font-size: 20px; font-weight: 800; color: var(--gray-700);">لا تملك صلاحية الوصول</h3>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
             
             let filesHTML = '';
             Object.keys(excelFiles).forEach(fileId => {
                 const file = excelFiles[fileId];
                 const isActive = fileId === currentExcelFile;
                 filesHTML += `
-                    <div class="file-tab ${isActive ? 'active' : ''}" onclick="switchExcelFile('${fileId}')">
-                        <i class="fas fa-file-excel"></i>
-                        <span>${file.name}</span>
+                    <div class="file-card ${isActive ? 'active' : ''}" onclick="selectFile('${fileId}')">
                         ${isAdmin && Object.keys(excelFiles).length > 1 ? `
-                            <button class="file-close" onclick="event.stopPropagation(); deleteExcelFile('${fileId}')" style="width:22px; height:22px; border-radius:50%; border:none; background:rgba(255,255,255,0.2); color:white; display:flex; align-items:center; justify-content:center;">
+                            <button class="file-delete-btn" onclick="event.stopPropagation(); deleteExcelFile('${fileId}')">
                                 <i class="fas fa-times"></i>
                             </button>
                         ` : ''}
+                        <div class="file-card-icon">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <div class="file-card-name">${file.name}</div>
+                        <div class="file-card-info">
+                            ${new Date(file.createdAt).toLocaleDateString('ar-EG')}
+                        </div>
                     </div>
                 `;
             });
+            
+            if (isAdmin) {
+                filesHTML += `
+                    <div class="add-card" onclick="document.getElementById('excelFile').click()">
+                        <i class="fas fa-plus"></i>
+                        <span>رفع ملف جديد</span>
+                    </div>
+                `;
+            }
             
             let sheetsHTML = '';
             Object.keys(sheets).forEach(sheetId => {
                 const sheet = sheets[sheetId];
                 const isActive = sheetId === currentSheet;
                 sheetsHTML += `
-                    <div class="sheet-tab ${isActive ? 'active' : ''}" onclick="switchSheet('${sheetId}')">
-                        <i class="fas fa-table"></i>
-                        <span>${sheet.name}</span>
+                    <div class="sheet-card ${isActive ? 'active' : ''}" onclick="selectSheet('${sheetId}')">
                         ${isAdmin && Object.keys(sheets).length > 1 ? `
-                            <button class="file-close" onclick="event.stopPropagation(); deleteSheet('${sheetId}')" style="width:22px; height:22px; border-radius:50%; border:none; background:rgba(255,255,255,0.2); color:white; display:flex; align-items:center; justify-content:center;">
+                            <button class="file-delete-btn" onclick="event.stopPropagation(); deleteSheet('${sheetId}')">
                                 <i class="fas fa-times"></i>
                             </button>
                         ` : ''}
+                        <div class="sheet-card-name">
+                            <i class="fas fa-table"></i>
+                            ${sheet.name}
+                        </div>
+                        <div class="sheet-card-info">
+                            ${sheet.rows} × ${sheet.cols}
+                        </div>
                     </div>
                 `;
             });
             
             if (isAdmin) {
-                content.innerHTML = `
-                    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
-                        <div class="files-bar">
-                            <span class="files-label"><i class="fas fa-folder-open"></i> الملفات</span>
-                            <div class="files-list">
-                                ${filesHTML}
-                                <button class="add-sheet-btn" onclick="document.getElementById('excelFile').click()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                sheetsHTML += `
+                    <div class="add-card" onclick="showAddSheetModal()">
+                        <i class="fas fa-plus"></i>
+                        <span>إضافة ورقة</span>
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = `
+                <div class="selection-page">
+                    <div class="selection-section">
+                        <div class="section-title">
+                            <i class="fas fa-folder-open" style="color: var(--primary);"></i>
+                            اختر الملف
+                        </div>
+                        <div class="files-grid">
+                            ${filesHTML}
+                        </div>
+                    </div>
+                    
+                    <div class="selection-section">
+                        <div class="section-title">
+                            <i class="fas fa-table" style="color: var(--secondary);"></i>
+                            اختر الورقة
+                        </div>
+                        <div class="sheets-grid">
+                            ${sheetsHTML}
+                        </div>
+                    </div>
+                    
+                    <button class="open-table-btn" onclick="openTablePage()" ${!currentExcelFile || !currentSheet ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i>
+                        <span>فتح الجدول</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function selectFile(fileId) {
+            currentExcelFile = fileId;
+            loadSheetsForFile(fileId);
+            showNotification(`✅ تم اختيار: ${excelFiles[fileId].name}`, 'success', 1500);
+        }
+
+        // ==================== التحسين: فتح تلقائي للورقة ====================
+        function selectSheet(sheetId) {
+            currentSheet = sheetId;
+            showNotification(`✅ فتح: ${sheets[sheetId].name}`, 'success', 1000);
+            setTimeout(() => openTablePage(), 300);
+        }
+
+        // ==================== فتح صفحة الجدول المستقلة ====================
+        function openTablePage() {
+            if (!currentExcelFile || !currentSheet) {
+                showNotification('❌ يرجى اختيار ملف وورقة', 'error');
+                return;
+            }
+            
+            document.getElementById('tablePageFileName').textContent = excelFiles[currentExcelFile]?.name || 'ملف';
+            document.getElementById('tablePageSheetName').textContent = sheets[currentSheet]?.name || 'ورقة';
+            
+            const isAdmin = currentUserRole === 'admin';
+            
+            // أزرار الإجراءات
+            let actionsHTML = '';
+            if (isAdmin) {
+                actionsHTML = `
+                    <button class="table-action-btn" onclick="downloadCurrentSheet()" title="تحميل">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="table-action-btn" onclick="createBackup()" title="نسخة احتياطية">
+                        <i class="fas fa-save"></i>
+                    </button>
+                `;
+            }
+            document.getElementById('tablePageActions').innerHTML = actionsHTML;
+            
+            // شريط الأدوات
+            let toolbarHTML = '';
+            if (isAdmin) {
+                toolbarHTML = `
+                    <div class="table-toolbar">
+                        <button class="tool-btn btn-success" onclick="addRow()">
+                            <i class="fas fa-plus-circle"></i><span>صف</span>
+                        </button>
+                        <button class="tool-btn btn-success" onclick="addColumn()">
+                            <i class="fas fa-plus-circle"></i><span>عمود</span>
+                        </button>
+                        <button class="tool-btn btn-danger" onclick="deleteCurrentSheet()">
+                            <i class="fas fa-trash"></i><span>حذف</span>
+                        </button>
+                    </div>
+                `;
+            }
+            document.getElementById('tablePageToolbar').innerHTML = toolbarHTML;
+            
+            // لوحة الصلاحيات
+            let permissionsHTML = '';
+            if (isAdmin) {
+                permissionsHTML = `
+                    <div class="permissions-panel">
+                        <div class="permissions-title">
+                            <i class="fas fa-user-shield"></i>
+                            <span>الصلاحيات</span>
                         </div>
                         
-                        <div class="sheets-bar">
-                            <span class="sheets-label"><i class="fas fa-table"></i> الأوراق</span>
-                            <div class="sheets-list">
-                                ${sheetsHTML}
-                                <button class="add-sheet-btn" onclick="showAddSheetModal()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                        <div class="permission-toggle">
+                            <span><i class="fas fa-eye"></i> المشاهد</span>
+                            <div class="toggle-switch ${userPermissions.view ? 'active' : ''}" onclick="togglePermission('view')">
+                                <div class="toggle-slider"></div>
                             </div>
+                            <span style="color: ${userPermissions.view ? 'var(--success)' : 'var(--gray-500)'}">
+                                ${userPermissions.view ? '✓' : '✗'}
+                            </span>
                         </div>
                         
-                        <div class="toolbar">
-                            <div class="tool-group">
-                                <button class="tool-btn btn-primary" onclick="downloadCurrentSheet()">
-                                    <i class="fas fa-download"></i><span>تحميل</span>
-                                </button>
-                                <button class="tool-btn btn-success" onclick="addRow()">
-                                    <i class="fas fa-plus-circle"></i><span>صف</span>
-                                </button>
-                                <button class="tool-btn btn-success" onclick="addColumn()">
-                                    <i class="fas fa-plus-circle"></i><span>عمود</span>
-                                </button>
-                                <button class="tool-btn btn-danger" onclick="deleteCurrentExcelFile()">
-                                    <i class="fas fa-trash"></i><span>حذف</span>
-                                </button>
+                        <div class="permission-toggle">
+                            <span><i class="fas fa-pen"></i> المعدل</span>
+                            <div class="toggle-switch ${userPermissions.edit ? 'active' : ''}" onclick="togglePermission('edit')">
+                                <div class="toggle-slider"></div>
                             </div>
-                        </div>
-                        
-                        <div class="permissions-panel">
-                            <div class="permissions-title">
-                                <i class="fas fa-user-shield"></i>
-                                <span>الصلاحيات</span>
-                            </div>
-                            
-                            <div class="permission-toggle">
-                                <span><i class="fas fa-eye"></i> المشاهد</span>
-                                <div class="toggle-switch ${userPermissions.view ? 'active' : ''}" onclick="togglePermission('view')">
-                                    <div class="toggle-slider"></div>
-                                </div>
-                                <span class="permission-status" style="color: ${userPermissions.view ? 'var(--success)' : 'var(--gray-500)'}">
-                                    ${userPermissions.view ? '✓' : '✗'}
-                                </span>
-                            </div>
-                            
-                            <div class="permission-toggle">
-                                <span><i class="fas fa-pen"></i> المعدل</span>
-                                <div class="toggle-switch ${userPermissions.edit ? 'active' : ''}" onclick="togglePermission('edit')">
-                                    <div class="toggle-slider"></div>
-                                </div>
-                                <span class="permission-status" style="color: ${userPermissions.edit ? 'var(--success)' : 'var(--gray-500)'}">
-                                    ${userPermissions.edit ? '✓' : '✗'}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="workspace">
-                            <div class="table-container" id="tableContainer"></div>
+                            <span style="color: ${userPermissions.edit ? 'var(--success)' : 'var(--gray-500)'}">
+                                ${userPermissions.edit ? '✓' : '✗'}
+                            </span>
                         </div>
                     </div>
                 `;
             } else {
-                const canView = userPermissions.view;
-                const canEdit = userPermissions.edit;
-                
-                if (!canView) {
-                    content.innerHTML = `
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: var(--gray-50);">
-                            <div style="text-align: center; padding: 30px; max-width: 300px;">
-                                <i class="fas fa-lock" style="font-size: 48px; color: var(--gray-400); margin-bottom: 16px;"></i>
-                                <h3 style="font-size: 20px; font-weight: 800; color: var(--gray-700); margin-bottom: 8px;">لا تملك صلاحية الوصول</h3>
-                                <p style="color: var(--gray-500);">يرجى التواصل مع المدير</p>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                content.innerHTML = `
-                    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
-                        <div class="files-bar">
-                            <span class="files-label"><i class="fas fa-folder-open"></i> الملفات</span>
-                            <div class="files-list">${filesHTML}</div>
-                        </div>
-                        
-                        <div class="sheets-bar">
-                            <span class="sheets-label"><i class="fas fa-table"></i> الأوراق</span>
-                            <div class="sheets-list">${sheetsHTML}</div>
-                        </div>
-                        
-                        <div style="background: ${canEdit ? '#d1fae5' : '#fef3c7'}; padding: 10px 16px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
-                            <i class="fas ${canEdit ? 'fa-pen' : 'fa-eye'}" style="color: ${canEdit ? 'var(--success)' : 'var(--warning)'};"></i>
-                            <span style="font-weight: 600; color: var(--gray-800); font-size: 13px;">
-                                ${canEdit ? 'لديك صلاحية التعديل' : 'لديك صلاحية المشاهدة فقط'}
-                            </span>
-                        </div>
-                        
-                        <div class="workspace">
-                            <div class="table-container" id="tableContainer"></div>
-                        </div>
+                const canEdit = userPermissions.view && userPermissions.edit;
+                permissionsHTML = `
+                    <div style="background: ${canEdit ? '#d1fae5' : '#fef3c7'}; padding: 10px 16px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
+                        <i class="fas ${canEdit ? 'fa-pen' : 'fa-eye'}" style="color: ${canEdit ? 'var(--success)' : 'var(--warning)'};"></i>
+                        <span style="font-weight: 600; color: var(--gray-800); font-size: 13px;">
+                            ${canEdit ? 'لديك صلاحية التعديل' : 'لديك صلاحية المشاهدة فقط'}
+                        </span>
                     </div>
                 `;
             }
+            document.getElementById('tablePagePermissions').innerHTML = permissionsHTML;
             
-            renderExcelTable();
+            document.getElementById('tablePage').classList.add('active');
+            loadSheetData(currentSheet);
         }
 
-        // ==================== تبديل الصلاحيات ====================
-        function togglePermission(permType) {
-            if (currentUserRole !== 'admin') {
-                showNotification('❌ هذه الخاصية متاحة للمدير فقط', 'error');
-                return;
-            }
-            
-            userPermissions[permType] = !userPermissions[permType];
-            
-            db.ref('settings/permissions').set(userPermissions)
-                .then(() => {
-                    showNotification(`✅ تم ${userPermissions[permType] ? 'تفعيل' : 'تعطيل'} صلاحية ${permType === 'view' ? 'المشاهدة' : 'التعديل'}`, 'success');
-                    renderExcelInterface();
-                })
-                .catch(error => {
-                    showNotification('❌ خطأ في حفظ الصلاحيات', 'error');
-                });
-        }
-
-        // ==================== تبديل الملفات والأوراق ====================
-        function switchExcelFile(fileId) {
-            currentExcelFile = fileId;
-            loadSheetsForFile(fileId);
-            showNotification(`📁 ${excelFiles[fileId].name}`, 'success', 1000);
-        }
-
-        function switchSheet(sheetId) {
-            currentSheet = sheetId;
-            renderExcelInterface();
-            loadSheetData(sheetId);
-            showNotification(`📄 ${sheets[sheetId].name}`, 'success', 1000);
+        function closeTablePage() {
+            document.getElementById('tablePage').classList.remove('active');
         }
 
         // ==================== تحميل بيانات الجدول ====================
@@ -1439,7 +1542,7 @@
 
         // ==================== رسم الجدول ====================
         function renderExcelTable() {
-            const tableContainer = document.getElementById('tableContainer');
+            const tableContainer = document.getElementById('tablePageContainer');
             if (!tableContainer) return;
             
             const sheet = sheets[currentSheet];
@@ -1529,6 +1632,7 @@
             }
             
             showNotification('✅ تم إضافة صف', 'success');
+            renderExcelTable();
         }
 
         function addColumn() {
@@ -1553,6 +1657,7 @@
             
             db.ref(`sheets/${currentSheet}/cols`).set(sheet.cols);
             showNotification('✅ تم إضافة عمود', 'success');
+            renderExcelTable();
         }
 
         function deleteExcelFile(fileId) {
@@ -1581,10 +1686,6 @@
             showNotification('✅ تم حذف الملف', 'success');
         }
 
-        function deleteCurrentExcelFile() {
-            deleteExcelFile(currentExcelFile);
-        }
-
         function deleteSheet(sheetId) {
             if (currentUserRole !== 'admin') return;
             if (Object.keys(sheets).length <= 1) {
@@ -1601,9 +1702,34 @@
             delete dataCache[sheetId];
             
             currentSheet = Object.keys(sheets)[0];
-            renderExcelInterface();
-            loadSheetData(currentSheet);
+            renderSelectionPage();
             showNotification('✅ تم حذف الورقة', 'success');
+        }
+
+        function deleteCurrentSheet() {
+            if (currentSheet) {
+                deleteSheet(currentSheet);
+                closeTablePage();
+            }
+        }
+
+        // ==================== تبديل الصلاحيات ====================
+        function togglePermission(permType) {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ هذه الخاصية متاحة للمدير فقط', 'error');
+                return;
+            }
+            
+            userPermissions[permType] = !userPermissions[permType];
+            
+            db.ref('settings/permissions').set(userPermissions)
+                .then(() => {
+                    showNotification(`✅ تم ${userPermissions[permType] ? 'تفعيل' : 'تعطيل'} صلاحية ${permType === 'view' ? 'المشاهدة' : 'التعديل'}`, 'success');
+                    openTablePage();
+                })
+                .catch(error => {
+                    showNotification('❌ خطأ في حفظ الصلاحيات', 'error');
+                });
         }
 
         // ==================== إدارة الأوراق ====================
@@ -1642,7 +1768,8 @@
             initializeSheetData(sheetId);
             
             hideModal('addSheetModal');
-            switchSheet(sheetId);
+            currentSheet = sheetId;
+            renderSelectionPage();
             showNotification(`✅ تم إنشاء "${sheetName}"`, 'success');
         }
 
@@ -1721,7 +1848,8 @@
                     sheetsCache[fileId] = sheetsForFile;
                     showNotification(`✅ تم استيراد ${workbook.SheetNames.length} ورقة`, 'success');
                     
-                    setTimeout(() => switchExcelFile(fileId), 500);
+                    currentExcelFile = fileId;
+                    loadSheetsForFile(fileId);
                     document.getElementById('excelFile').value = '';
                     
                 } catch (error) {
@@ -1765,7 +1893,7 @@
             element.classList.add('active');
             
             if (tab === 'excel') {
-                renderExcelInterface();
+                renderSelectionPage();
             } else if (tab === 'users') {
                 renderUsersManagement();
             } else if (tab === 'logs') {
@@ -1775,7 +1903,7 @@
             }
         }
 
-        // ==================== إدارة المستخدمين ====================
+        // ==================== إدارة المستخدمين مع التحسينات ====================
         function renderUsersManagement() {
             if (currentUserRole !== 'admin') return;
             
@@ -1792,9 +1920,9 @@
                             <input type="email" id="newUserEmail" class="login-input" placeholder="البريد الإلكتروني">
                             <input type="password" id="newUserPassword" class="login-input" placeholder="كلمة المرور">
                             <select id="newUserRole" class="role-select">
-                                <option value="view">👁️ مشاهد - مشاهدة فقط</option>
-                                <option value="edit">✏️ معدل - مشاهدة وتعديل</option>
-                                <option value="admin">👑 مدير - صلاحية كاملة</option>
+                                <option value="view">👁️ مشاهد</option>
+                                <option value="edit">✏️ معدل</option>
+                                <option value="admin">👑 مدير</option>
                             </select>
                             <button class="tool-btn btn-success" onclick="addUser()" style="height: 52px;">
                                 <i class="fas fa-plus"></i> إضافة
@@ -1802,7 +1930,7 @@
                         </div>
                     </div>
                     
-                    <div class="users-list">
+                    <div class="users-list" style="background: white; padding: 20px; border-radius: 16px;">
                         <h3 style="margin-bottom: 16px;"><i class="fas fa-list"></i> قائمة المستخدمين</h3>
                         <div id="usersListContainer"></div>
                     </div>
@@ -1826,27 +1954,72 @@
                     
                     container.innerHTML += `
                         <div class="user-item" style="border: ${isCurrentUser ? '2px solid var(--primary)' : 'none'};">
-                            <div class="user-info">
-                                <div style="font-weight: 700; margin-bottom: 6px;">
+                            <div class="user-info" style="flex: 1;">
+                                <div style="font-weight: 700; margin-bottom: 10px; font-size: 16px;">
                                     ${user.email} ${isCurrentUser ? '<span style="background: var(--primary); color: white; padding: 2px 10px; border-radius: 40px; font-size: 12px; margin-right: 8px;">أنت</span>' : ''}
                                 </div>
-                                <div>
-                                    <span style="background: ${user.role === 'admin' ? '#fee2e2' : user.role === 'edit' ? '#dbeafe' : '#fef3c7'}; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;">
+                                <div style="margin-bottom: 12px;">
+                                    <span style="background: ${user.role === 'admin' ? '#fee2e2' : user.role === 'edit' ? '#dbeafe' : '#fef3c7'}; padding: 6px 14px; border-radius: 40px; font-size: 13px; font-weight: 600;">
                                         ${roleIcon} ${roleName}
                                     </span>
                                 </div>
-                                <div style="color: var(--gray-500); font-size: 12px; margin-top: 6px;">
-                                    <i class="fas fa-calendar"></i> ${new Date(user.createdAt).toLocaleDateString('ar-EG')}
-                                </div>
+                                
+                                ${!isCurrentUser ? `
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+                                        <button onclick="changeUserRole('${uid}', 'admin')" 
+                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'admin' ? 'var(--danger)' : 'var(--gray-300)'}; background: ${user.role === 'admin' ? '#fee2e2' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            <i class="fas fa-crown"></i> مدير
+                                        </button>
+                                        <button onclick="changeUserRole('${uid}', 'edit')" 
+                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'edit' ? 'var(--secondary)' : 'var(--gray-300)'}; background: ${user.role === 'edit' ? '#dbeafe' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            <i class="fas fa-pen"></i> معدل
+                                        </button>
+                                        <button onclick="changeUserRole('${uid}', 'view')" 
+                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'view' ? 'var(--warning)' : 'var(--gray-300)'}; background: ${user.role === 'view' ? '#fef3c7' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            <i class="fas fa-eye"></i> مشاهد
+                                        </button>
+                                    </div>
+                                ` : ''}
                             </div>
                             ${!isCurrentUser ? `
-                                <button class="delete-user-btn" onclick="deleteUser('${uid}')" style="background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                    <i class="fas fa-trash"></i> حذف		
+                                <button class="delete-user-btn" onclick="deleteUser('${uid}')" style="background: var(--danger); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer; align-self: flex-start;">
+                                    <i class="fas fa-trash"></i> حذف
                                 </button>
                             ` : ''}
                         </div>
                     `;
                 });
+            });
+        }
+
+        // ==================== التحسين: تغيير صلاحيات المستخدم ====================
+        function changeUserRole(uid, newRole) {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه تغيير الصلاحيات', 'error');
+                return;
+            }
+            
+            db.ref(`users/${uid}`).once('value', snap => {
+                const user = snap.val();
+                if (user && user.role === newRole) {
+                    showNotification('ℹ️ المستخدم لديه هذه الصلاحية بالفعل', 'info');
+                    return;
+                }
+                
+                const roleNames = {
+                    'admin': 'مدير',
+                    'edit': 'معدل',
+                    'view': 'مشاهد'
+                };
+                
+                db.ref(`users/${uid}/role`).set(newRole)
+                    .then(() => {
+                        showNotification(`✅ تم تغيير الصلاحية إلى: ${roleNames[newRole]}`, 'success');
+                        loadUsersList();
+                    })
+                    .catch(error => {
+                        showNotification('❌ خطأ في تغيير الصلاحية', 'error');
+                    });
             });
         }
 
@@ -1986,7 +2159,6 @@
                                 <div class="backup-details">
                                     <span>${backup.fileName}</span>
                                     <span>${backup.sheetName}</span>
-                                    <span>${backup.createdBy}</span>
                                     <span>${date.toLocaleString('ar-EG')}</span>
                                 </div>
                             </div>
@@ -2002,6 +2174,11 @@
         function createBackup() {
             if (currentUserRole !== 'admin') {
                 showNotification('❌ فقط المدير يمكنه إنشاء نسخ', 'error');
+                return;
+            }
+            
+            if (!currentSheet) {
+                showNotification('❌ يرجى فتح ورقة أولاً', 'error');
                 return;
             }
             
@@ -2023,9 +2200,6 @@
             db.ref(`backups/${currentExcelFile}/${backupId}`).set(backupData)
                 .then(() => {
                     showNotification('✅ تم إنشاء نسخة احتياطية', 'success');
-                    if (document.querySelector('.tab.active').innerHTML.includes('النسخ')) {
-                        loadBackups();
-                    }
                 });
         }
 
@@ -2046,6 +2220,7 @@
                             if (dataCache[currentSheet]) {
                                 dataCache[currentSheet] = backup.data;
                             }
+                            renderExcelTable();
                         });
                 }
             });
@@ -2069,7 +2244,6 @@
             }, duration);
         }
 
-        // معالجة أخطاء Firebase
         window.addEventListener('unhandledrejection', function(event) {
             console.error('Firebase Error:', event.reason);
         });
