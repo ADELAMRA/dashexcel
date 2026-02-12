@@ -1,373 +1,2078 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القيمين الدينيين</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover">
+    <title>Excel تعاوني - نظام متكامل للصلاحيات</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <!-- SheetJS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        /* نفس الـ CSS السابق - محذوف للإيجاز */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Tahoma, Arial; direction: rtl; background: #f4f6f8; color: #444; line-height: 1.6; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h1 { color: #1976d2; margin-bottom: 10px; }
-        .controls { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-        .search-box { flex: 1; min-width: 250px; }
-        .search-box input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        button { padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .btn-primary { background: #1976d2; color: white; }
-        .btn-warning { background: #ff9800; color: white; }
-        .btn-danger { background: #f44336; color: white; }
-        .btn-success { background: #4caf50; color: white; }
-        .status-bar { background: white; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        .table-container { background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 15px; text-align: center; border-bottom: 1px solid #eee; }
-        th { background: #1976d2; color: white; position: sticky; top: 0; }
-        .actions { display: flex; gap: 5px; justify-content: center; }
-        .no-data, .loading { text-align: center; padding: 30px; color: #777; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 1; }
-        .modal-title { font-size: 1.2rem; color: #1976d2; }
-        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #777; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; position: sticky; bottom: 0; background: white; padding-top: 15px; border-top: 1px solid #eee; }
-        @media (max-width: 768px) { .controls { flex-direction: column; } .search-box { min-width: 100%; } th, td { padding: 8px 10px; font-size: 14px; } .actions { flex-direction: column; } }
+        /* ===== متغيرات الألوان ===== */
+        :root {
+            --primary: #0f6c3e;
+            --primary-light: #1e8b4c;
+            --primary-dark: #0a4e2e;
+            --secondary: #2563eb;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --purple: #8b5cf6;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ===== تطبيق كامل الشاشة ===== */
+        .app-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== شاشة تسجيل الدخول - متجاوبة ===== */
+        .login-container {
+            max-width: 480px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 64px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .login-title {
+            color: var(--gray-900);
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: var(--gray-500);
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ===== شريط العنوان العلوي - متجاوب ===== */
+        .title-bar {
+            background: var(--primary);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .excel-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .excel-logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .excel-logo span {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 40px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .user-email {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== شريط التبويبات - متجاوب ===== */
+        .tab-bar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 8px 0;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-500);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* ===== شريط الملفات - متجاوب ===== */
+        .files-bar {
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .files-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gray-700);
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .files-list {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .file-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .file-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ===== شريط الأوراق - متجاوب ===== */
+        .sheets-bar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .sheets-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gray-700);
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .sheets-list {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sheet-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .sheet-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .add-sheet-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px dashed var(--gray-300);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--gray-500);
+            flex-shrink: 0;
+        }
+
+        /* ===== شريط الأدوات - متجاوب ===== */
+        .toolbar {
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .tool-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .btn-primary { background: var(--primary); }
+        .btn-success { background: var(--success); }
+        .btn-danger { background: var(--danger); }
+
+        /* ===== لوحة تحكم المدير - متجاوبة ===== */
+        .permissions-panel {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f2ff 100%);
+            border-bottom: 2px solid var(--primary);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .permissions-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-800);
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .permission-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 2px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .permission-toggle span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: var(--gray-300);
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            right: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            right: 24px;
+        }
+
+        /* ===== منطقة الجدول - سكرول محسن للهاتف ===== */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            background: white;
+        }
+
+        .table-container {
+            flex: 1;
+            overflow: auto !important;
+            position: relative;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch; /* سكرول سلس للهاتف */
+        }
+
+        /* سكرول مخصص - أصغر للهاتف */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        table {
+            border-collapse: collapse;
+            min-width: 100%;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--gray-800);
+            color: white;
+            padding: 10px 12px;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--gray-200);
+            padding: 8px 10px;
+            text-align: center;
+            min-width: 100px;
+            white-space: nowrap;
+            background: white;
+            font-size: 13px;
+        }
+
+        .row-header {
+            background: var(--gray-100);
+            font-weight: 700;
+            position: sticky;
+            left: 0;
+            z-index: 15;
+            min-width: 50px;
+        }
+
+        /* ===== إدارة المستخدمين - متجاوبة ===== */
+        .users-container {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+            background: var(--gray-50);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .users-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .add-user-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .add-user-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 12px;
+        }
+
+        .role-select {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .user-item {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* ===== سجل التعديلات - متجاوب ===== */
+        .logs-container {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+            background: var(--gray-50);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .logs-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .logs-list {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .log-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        /* ===== النسخ الاحتياطية - متجاوبة ===== */
+        .backups-container {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+            background: var(--gray-50);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .backups-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .create-backup-btn {
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .backup-item {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .backup-details {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .restore-backup-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        /* ===== الإشعارات ===== */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            padding: 14px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* ===== تحسينات الهاتف المحمول - الأهم هنا ===== */
+        @media (max-width: 1024px) {
+            .add-user-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* تقليل المسافات */
+            body {
+                padding: 10px;
+            }
+            
+            .app-wrapper {
+                height: calc(100vh - 20px);
+                border-radius: 16px;
+            }
+            
+            /* شاشة تسجيل الدخول */
+            .login-container {
+                margin: 40px auto;
+                padding: 32px 24px;
+            }
+            
+            .login-title {
+                font-size: 28px;
+            }
+            
+            .login-logo {
+                font-size: 56px;
+            }
+            
+            /* الشريط العلوي */
+            .title-bar {
+                padding: 10px 16px;
+            }
+            
+            .excel-logo span {
+                font-size: 18px;
+            }
+            
+            .user-email {
+                display: none; /* إخفاء الإيميل في الهاتف */
+            }
+            
+            /* شريط التبويبات */
+            .tab {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            
+            /* شريط الملفات والأوراق */
+            .files-bar, .sheets-bar {
+                padding: 8px 12px;
+            }
+            
+            .file-tab, .sheet-tab {
+                padding: 5px 12px;
+                font-size: 12px;
+            }
+            
+            /* شريط الأدوات */
+            .toolbar {
+                padding: 10px 12px;
+            }
+            
+            .tool-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            /* لوحة الصلاحيات */
+            .permissions-panel {
+                padding: 12px;
+            }
+            
+            .permission-toggle {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+            
+            .permission-toggle span {
+                font-size: 12px;
+            }
+            
+            .toggle-switch {
+                width: 44px;
+                height: 24px;
+            }
+            
+            .toggle-slider {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .toggle-switch.active .toggle-slider {
+                right: 22px;
+            }
+            
+            /* الجدول */
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+                min-width: 80px;
+            }
+            
+            .row-header {
+                min-width: 45px;
+            }
+            
+            /* إدارة المستخدمين */
+            .users-container, .logs-container, .backups-container {
+                padding: 16px;
+            }
+            
+            .users-header h2, .logs-header h2, .backups-header h2 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+            
+            .add-user-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .add-user-card, .users-list, .logs-list, .backups-list {
+                padding: 16px;
+            }
+            
+            .user-item, .backup-item {
+                padding: 14px;
+            }
+            
+            .backup-details {
+                gap: 12px;
+            }
+            
+            /* سكرول مخصص أصغر للهاتف */
+            .table-container::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* شاشات صغيرة جداً */
+            .excel-logo span {
+                display: none; /* إخفاء النص في الشاشات الصغيرة */
+            }
+            
+            .excel-logo i {
+                font-size: 24px;
+            }
+            
+            .tab {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .tab i {
+                font-size: 14px;
+            }
+            
+            .tool-btn span {
+                display: none; /* إخفاء نص الأزرار */
+            }
+            
+            .tool-btn i {
+                font-size: 16px;
+            }
+            
+            .tool-btn {
+                padding: 8px;
+            }
+            
+            .permission-toggle span:first-child {
+                display: none; /* إخفاء النص الطويل */
+            }
+            
+            .permission-status {
+                font-size: 12px;
+            }
+            
+            .backup-details {
+                flex-direction: column;
+                gap: 6px;
+            }
+            
+            .notification {
+                left: 16px;
+                right: 16px;
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+        }
+
+        /* تحسين اللمس للهاتف */
+        @media (hover: none) and (pointer: coarse) {
+            .file-tab, .sheet-tab, .tool-btn, .tab, .add-sheet-btn {
+                min-height: 44px; /* حجم مناسب للمس */
+            }
+            
+            .file-tab i, .sheet-tab i {
+                font-size: 16px;
+            }
+        }
+
+        /* دعم الوضع الأفقي */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .app-wrapper {
+                height: calc(100vh - 20px);
+            }
+            
+            .title-bar {
+                padding: 8px 16px;
+            }
+            
+            .tabs {
+                padding: 4px 0;
+            }
+            
+            .tab {
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>تطبيق إدارة القيمين الدينيين</h1>
-            <p>إدارة بيانات القيمين الدينيين بسهولة وأمان</p>
-            
-            <div class="controls">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="ابحث في البيانات...">
-                </div>
-                <button class="btn-primary" id="refreshBtn">تحديث البيانات</button>
-                <button class="btn-success" id="testBtn">بيانات تجريبية</button>
-            </div>
-        </header>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-logo">
+            <i class="fas fa-table"></i>
+        </div>
+        <h1 class="login-title">Excel تعاوني</h1>
+        <p class="login-subtitle">نظام متكامل للصلاحيات والتعاون</p>
+        
+        <input type="email" id="loginEmail" class="login-input" placeholder="البريد الإلكتروني" value="admin@excel.com">
+        <input type="password" id="loginPassword" class="login-input" placeholder="كلمة المرور" value="123456789">
+        
+        <button onclick="handleLogin()" class="login-btn">
+            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+        </button>
+    </div>
 
-        <div class="status-bar">
-            <div id="status">جاري تحميل البيانات...</div>
+    <!-- التطبيق الرئيسي -->
+    <div id="appScreen" class="app-wrapper" style="display: none;">
+        
+        <!-- شريط العنوان -->
+        <div class="title-bar">
+            <div class="excel-logo">
+                <i class="fas fa-table"></i>
+                <span>Excel تعاوني</span>
+            </div>
+            <div class="user-section">
+                <div class="user-badge">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span class="user-email" id="userEmail">admin@excel.com</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="table-container">
-            <table>
-                <tbody id="tableBody">
-                    <tr>
-                        <td class="loading">جاري تحميل البيانات...</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- شريط التبويبات -->
+        <div class="tab-bar">
+            <div class="tabs" id="mainTabs">
+                <div class="tab active" onclick="switchMainTab('excel', this)">
+                    <i class="fas fa-table"></i><span>الجداول</span>
+                </div>
+                <div class="tab" onclick="switchMainTab('users', this)" id="usersTab">
+                    <i class="fas fa-users"></i><span>المستخدمين</span>
+                </div>
+                <div class="tab" onclick="switchMainTab('logs', this)" id="logsTab">
+                    <i class="fas fa-history"></i><span>سجل التعديلات</span>
+                </div>
+                <div class="tab" onclick="switchMainTab('backups', this)" id="backupsTab">
+                    <i class="fas fa-archive"></i><span>النسخ الاحتياطية</span>
+                </div>
+            </div>
+            <div id="uploadButtonContainer">
+                <input type="file" id="excelFile" accept=".xlsx,.xls" onchange="uploadExcel()" style="display: none;">
+                <button class="upload-btn" onclick="document.getElementById('excelFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i><span>رفع</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- المحتوى الديناميكي -->
+        <div id="dynamicContent" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;"></div>
+    </div>
+
+    <!-- نافذة إضافة ورقة -->
+    <div id="addSheetModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 10000;">
+        <div style="background: white; padding: 24px; border-radius: 16px; width: 90%; max-width: 500px; margin: 20px;">
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-plus-circle" style="color: var(--success);"></i> إضافة ورقة جديدة</h3>
+            <input type="text" id="newSheetNameInput" class="login-input" placeholder="اسم الورقة">
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+                <button onclick="hideModal('addSheetModal')" style="padding: 10px 20px; border-radius: 10px; border: none; background: var(--gray-200); font-weight: 600; cursor: pointer;">إلغاء</button>
+                <button onclick="createNewSheet()" style="padding: 10px 20px; border-radius: 10px; border: none; background: var(--success); color: white; font-weight: 600; cursor: pointer;">إنشاء</button>
+            </div>
         </div>
     </div>
 
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">تعديل بيانات القيم</h3>
-                <button class="close-modal" id="closeEditModal">&times;</button>
-            </div>
-            <form id="editForm">
-                <div id="formFields"></div>
-                <div class="form-actions">
-                    <button type="button" class="btn-danger" id="cancelEdit">إلغاء</button>
-                    <button type="submit" class="btn-success" id="saveEdit">حفظ التعديلات</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- الإشعارات -->
+    <div id="notification" class="notification"></div>
 
     <script>
-        // بيانات تجريبية شاملة
-        const sampleData = [
-            { 
-                _row: 1, 
-                "الاسم الكامل بالعربية": "أحمد محمد",
-                "الجهة": "المندوبية الجهوية للشؤون الإسلامية بجهة فاس مكناس",
-                "الجماعة": "مكناس",
-                "وضعية القيم الديني": "مكلف",
-                "المسجد مفتوح أم مغلق": "مفتوح",
-                "الجنس": "ذكر",
-                "الحالة العائلية": "متزوج",
-                "عدد الزوجات": "1",
-                "المهنة": "رجل التعليم",
-                "إقليم الازدياد": "مكناس",
-                "جماعة الازدياد": "مكناس",
-                "مكان الازدياد": "مكناس",
-                "إقليم السكن": "مكناس",
-                "جماعة السكن": "مكناس"
-            },
-            { 
-                _row: 2, 
-                "الاسم الكامل بالعربية": "فاطمة الزهراء",
-                "الجهة": "المندوبية الجهوية للشؤون الإسلامية بجهة الرباط سلا القنيطرة",
-                "الجماعة": "سلا",
-                "وضعية القيم الديني": "غير مكلف",
-                "المسجد مفتوح أم مغلق": "مغلق",
-                "الجنس": "أنثى",
-                "الحالة العائلية": "عازب(ة)",
-                "عدد الزوجات": "0",
-                "المهنة": "مستشار محو الأمية",
-                "إقليم الازدياد": "الرباط",
-                "جماعة الازدياد": "سلا",
-                "مكان الازدياد": "الرباط",
-                "إقليم السكن": "سلا",
-                "جماعة السكن": "سلا"
-            }
-        ];
+        // ==================== إعدادات Firebase ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6n_O1GZkJrvY0qrnSg-LFRjoOaqKKDd8",
+  authDomain: "dataexcel-72c92.firebaseapp.com",
+  databaseURL: "https://dataexcel-72c92-default-rtdb.firebaseio.com",
+  projectId: "dataexcel-72c92",
+  storageBucket: "dataexcel-72c92.firebasestorage.app",
+  messagingSenderId: "33675725947",
+  appId: "1:33675725947:web:8288d29447dfc78a6f26de",
+  measurementId: "G-0XLZ7F7BEL"
+};
 
-        const dropdownOptions = {
-            'الجهة': ['المندوبية الجهوية للشؤون الإسلامية بجهة فاس مكناس', 'المندوبية الجهوية للشؤون الإسلامية بجهة الرباط سلا القنيطرة'],
-            'الجماعة': ['مكناس', 'سلا', 'الرباط'],
-            'وضعية القيم الديني': ['مكلف', 'غير مكلف'],
-            'المسجد مفتوح أم مغلق': ['مفتوح', 'مغلق'],
-            'الجنس': ['ذكر', 'أنثى'],
-            'الحالة العائلية': ['مطلق(ة)', 'متزوج(ة)', 'عازب(ة)', 'أرمل(ة)'],
-            'عدد الزوجات': ['0', '1', '2', '3', '4'],
-            'المهنة': ['أجير', 'تاجر', 'رجل التعليم', 'مستشار محو الأمية', 'طبيب', 'مهندس'],
-            'إقليم الازدياد': ['مكناس', 'فاس', 'الرباط'],
-            'جماعة الازدياد': ['مكناس', 'سلا', 'الرباط'],
-            'مكان الازدياد': ['مكناس', 'فاس', 'الرباط'],
-            'إقليم السكن': ['مكناس', 'فاس', 'الرباط'],
-            'جماعة السكن': ['مكناس', 'سلا', 'الرباط']
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // ==================== متغيرات عامة ====================
+        let currentUser = null;
+        let currentUserRole = 'admin';
+        let currentExcelFile = null;
+        let currentSheet = null;
+        let excelFiles = {};
+        let sheets = {};
+        let currentSheetData = {};
+        let mergedCells = [];
+        let sheetsCache = {};
+        let dataCache = {};
+        
+        // صلاحيات المستخدمين
+        let userPermissions = {
+            view: true,
+            edit: false
         };
+        
+        const MAX_ROWS = 1000;
+        const MAX_COLS = 100;
 
-        let allData = [];
-        let filteredData = [];
-        let currentEditingRow = null;
-
-        function updateStatus(message) {
-            document.getElementById('status').textContent = message;
-        }
-
-        function renderTable() {
-            const tableBody = document.getElementById('tableBody');
+        // ==================== نظام المصادقة ====================
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
             
-            if (!filteredData.length) {
-                tableBody.innerHTML = '<tr><td class="no-data">لا توجد بيانات لعرضها</td></tr>';
+            if (!email || !password) {
+                showNotification('❌ يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
                 return;
             }
-
-            const headers = Object.keys(filteredData[0]).filter(key => key !== '_row');
             
-            let html = '<tr>';
-            headers.forEach(header => {
-                html += `<th>${header}</th>`;
-            });
-            html += '<th>الإجراءات</th></tr>';
-
-            filteredData.forEach((item, index) => {
-                const rowId = item._row || index;
-                
-                html += `<tr>`;
-                headers.forEach(header => {
-                    const value = item[header] != null ? item[header] : '';
-                    const displayValue = value.length > 20 ? value.substring(0, 20) + '...' : value;
-                    html += `<td title="${value}">${displayValue}</td>`;
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    if (error.code === 'auth/user-not-found') {
+                        auth.createUserWithEmailAndPassword(email, password)
+                            .then(cred => {
+                                return db.ref(`users/${cred.user.uid}`).set({
+                                    email: email,
+                                    role: 'admin',
+                                    createdAt: new Date().toISOString()
+                                });
+                            })
+                            .then(() => {
+                                showNotification('✅ تم إنشاء حساب مدير بنجاح', 'success');
+                                setTimeout(() => window.location.reload(), 1500);
+                            })
+                            .catch(err => showNotification('❌ ' + err.message, 'error'));
+                    } else {
+                        showNotification('❌ ' + error.message, 'error');
+                    }
                 });
-                html += `
-                    <td class="actions">
-                        <button class="btn-warning" onclick="openEditModal(${rowId})">تعديل</button>
-                        <button class="btn-danger" onclick="deleteRow(${rowId})">حذف</button>
-                    </td>
-                `;
-                html += '</tr>';
-            });
-
-            tableBody.innerHTML = html;
         }
 
-        function openEditModal(rowId) {
-            const row = allData.find(item => item._row == rowId || allData.indexOf(item) === rowId);
-            
-            if (!row) {
-                alert('لم يتم العثور على السجل');
-                return;
+        function handleLogout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                auth.signOut();
             }
+        }
 
-            currentEditingRow = rowId;
-            
-            const headers = Object.keys(row).filter(key => key !== '_row');
-            const formFields = document.getElementById('formFields');
-            formFields.innerHTML = '';
-            
-            headers.forEach(header => {
-                const value = row[header] != null ? row[header] : '';
+        // ==================== مراقبة حالة المستخدم ====================
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'flex';
+                document.getElementById('userAvatar').textContent = user.email.charAt(0).toUpperCase();
+                document.getElementById('userEmail').textContent = user.email;
                 
-                if (dropdownOptions[header]) {
-                    let optionsHTML = '';
-                    dropdownOptions[header].forEach(option => {
-                        const selected = option === value ? 'selected' : '';
-                        optionsHTML += `<option value="${option}" ${selected}>${option}</option>`;
+                db.ref(`users/${user.uid}`).once('value', snap => {
+                    const userData = snap.val();
+                    currentUserRole = userData ? userData.role : 'admin';
+                    
+                    if (!userData) {
+                        currentUserRole = 'admin';
+                        db.ref(`users/${user.uid}`).set({
+                            email: user.email,
+                            role: 'admin',
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                    
+                    db.ref('settings/permissions').once('value', snap => {
+                        const perms = snap.val();
+                        if (perms) {
+                            userPermissions = perms;
+                        } else {
+                            db.ref('settings/permissions').set(userPermissions);
+                        }
+                        updateUIByRole();
                     });
                     
-                    formFields.innerHTML += `
-                        <div class="form-group">
-                            <label>${header}</label>
-                            <select name="${header}">
-                                <option value="">-- اختر ${header} --</option>
-                                ${optionsHTML}
-                            </select>
-                        </div>
-                    `;
-                } else {
-                    formFields.innerHTML += `
-                        <div class="form-group">
-                            <label>${header}</label>
-                            <input type="text" name="${header}" value="${value}">
-                        </div>
-                    `;
-                }
-            });
-
-            document.getElementById('editModal').style.display = 'flex';
-        }
-
-        async function saveEdit(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(document.getElementById('editForm'));
-            const updatedData = {};
-            
-            const originalRow = allData.find(item => item._row == currentEditingRow || allData.indexOf(item) === currentEditingRow);
-            
-            if (!originalRow) return;
-            
-            const headers = Object.keys(originalRow).filter(key => key !== '_row');
-            
-            headers.forEach(header => {
-                updatedData[header] = formData.get(header) || '';
-            });
-
-            try {
-                // تحديث البيانات محلياً فقط (بسبب مشكلة CORS)
-                const rowIndex = allData.findIndex(item => item._row == currentEditingRow || allData.indexOf(item) === currentEditingRow);
-                
-                if (rowIndex !== -1) {
-                    allData[rowIndex] = { ...allData[rowIndex], ...updatedData };
-                    filteredData = [...allData];
-                    renderTable();
-                    
-                    updateStatus('✅ تم حفظ التعديلات محلياً - جاري محاولة المزامنة مع الجدول...');
-                    
-                    // محاولة المزامنة (قد تفشل بسبب CORS)
-                    try {
-                        await attemptSyncWithServer(currentEditingRow, updatedData, headers);
-                    } catch (syncError) {
-                        console.log('⚠️ المزامنة مع الجدول غير متاحة حالياً');
-                    }
-                }
-
-                closeEditModal();
-                
-            } catch (error) {
-                updateStatus('❌ خطأ في حفظ التعديلات');
-                console.error('خطأ الحفظ:', error);
+                    loadExcelFiles();
+                });
+            } else {
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('appScreen').style.display = 'none';
             }
-        }
-
-        // محاولة المزامنة (قد تفشل بسبب CORS)
-        async function attemptSyncWithServer(rowId, data, headers) {
-            // هذه الدالة قد تفشل بسبب CORS
-            // يمكنك تفعيلها بعد تعديل Google Apps Script
-            return Promise.resolve({ success: false, error: 'CORS issue' });
-        }
-
-        function deleteRow(rowId) {
-            if (!confirm('هل أنت متأكد من رغبتك في حذف هذا السجل؟')) return;
-
-            try {
-                allData = allData.filter(item => !(item._row == rowId || allData.indexOf(item) === rowId));
-                filteredData = [...allData];
-                renderTable();
-
-                updateStatus('✅ تم حذف السجل محلياً');
-                
-            } catch (error) {
-                updateStatus('❌ خطأ في حذف السجل');
-                console.error('خطأ الحذف:', error);
-            }
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            currentEditingRow = null;
-        }
-
-        function searchData() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            filteredData = allData.filter(item => 
-                Object.values(item).some(value => 
-                    value && value.toString().toLowerCase().includes(searchTerm)
-                )
-            );
-            renderTable();
-        }
-
-        async function loadRealData() {
-            try {
-                updateStatus('🔄 جاري محاولة تحميل البيانات من الجدول...');
-                
-                // محاولة جلب البيانات (قد تفشل بسبب CORS)
-                try {
-                    const response = await fetch('https://script.google.com/macros/s/AKfycbylfd-lCAvii6zxd4Eoivm69shNP6yUtAAThaf9RV2KaO9rDU2uAjedscfAEcEeSt1p/exec?t=' + Date.now());
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data && Array.isArray(data) && data.length > 0) {
-                            allData = data;
-                            filteredData = [...data];
-                            updateStatus(`✅ تم تحميل ${data.length} سجل بنجاح من الجدول`);
-                            renderTable();
-                            return;
-                        }
-                    }
-                } catch (apiError) {
-                    console.log('⚠️ لا يمكن الاتصال بالجدول - استخدام بيانات تجريبية');
-                }
-                
-                // استخدام البيانات التجريبية إذا فشل الاتصال
-                allData = sampleData;
-                filteredData = [...sampleData];
-                updateStatus('📋 تم تحميل البيانات التجريبية - المزامنة مع الجدول غير متاحة');
-                renderTable();
-                
-            } catch (error) {
-                console.error('❌ خطأ في جلب البيانات:', error);
-                allData = sampleData;
-                filteredData = [...sampleData];
-                updateStatus('📋 تم تحميل البيانات التجريبية');
-                renderTable();
-            }
-        }
-
-        function useSampleData() {
-            allData = sampleData;
-            filteredData = [...sampleData];
-            updateStatus('📋 تم تحميل البيانات التجريبية');
-            renderTable();
-        }
-
-        // إعداد الأحداث
-        document.getElementById('searchInput').addEventListener('input', searchData);
-        document.getElementById('refreshBtn').addEventListener('click', loadRealData);
-        document.getElementById('testBtn').addEventListener('click', useSampleData);
-        document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
-        document.getElementById('cancelEdit').addEventListener('click', closeEditModal);
-        document.getElementById('editForm').addEventListener('submit', saveEdit);
-
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) closeEditModal();
         });
 
-        // بدء التطبيق
-        loadRealData();
+        // ==================== تحديث واجهة المستخدم ====================
+        function updateUIByRole() {
+            const isAdmin = currentUserRole === 'admin';
+            
+            document.getElementById('usersTab').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('logsTab').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('backupsTab').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('uploadButtonContainer').style.display = isAdmin ? 'block' : 'none';
+            
+            if (document.getElementById('dynamicContent')) {
+                renderExcelInterface();
+            }
+        }
+
+        // ==================== تحميل ملفات Excel ====================
+        function loadExcelFiles() {
+            db.ref('excelFiles').once('value', snap => {
+                if (!snap.exists() || Object.keys(snap.val()).length === 0) {
+                    const defaultFileId = 'file_' + Date.now();
+                    excelFiles = { [defaultFileId]: {
+                        id: defaultFileId,
+                        name: 'الملف الرئيسي',
+                        createdAt: new Date().toISOString(),
+                        createdBy: currentUser?.email || 'system'
+                    }};
+                    db.ref(`excelFiles/${defaultFileId}`).set(excelFiles[defaultFileId]);
+                    
+                    const defaultSheetId = 'sheet_' + Date.now();
+                    sheets = { [defaultSheetId]: {
+                        id: defaultSheetId,
+                        name: 'ورقة1',
+                        rows: 100,
+                        cols: 26,
+                        fileId: defaultFileId
+                    }};
+                    db.ref(`sheets/${defaultSheetId}`).set(sheets[defaultSheetId]);
+                    initializeSheetData(defaultSheetId);
+                } else {
+                    excelFiles = snap.val();
+                }
+                
+                currentExcelFile = Object.keys(excelFiles)[0];
+                loadSheetsForFile(currentExcelFile);
+            });
+        }
+
+        function loadSheetsForFile(fileId) {
+            if (sheetsCache[fileId]) {
+                sheets = sheetsCache[fileId];
+                currentSheet = Object.keys(sheets)[0];
+                renderExcelInterface();
+                loadSheetData(currentSheet);
+                return;
+            }
+            
+            db.ref('sheets').orderByChild('fileId').equalTo(fileId).once('value', snap => {
+                sheets = snap.val() || {};
+                sheetsCache[fileId] = sheets;
+                
+                if (Object.keys(sheets).length === 0) {
+                    const sheetId = 'sheet_' + Date.now();
+                    sheets = { [sheetId]: {
+                        id: sheetId,
+                        name: 'ورقة1',
+                        rows: 100,
+                        cols: 26,
+                        fileId: fileId
+                    }};
+                    db.ref(`sheets/${sheetId}`).set(sheets[sheetId]);
+                    initializeSheetData(sheetId);
+                }
+                
+                currentSheet = Object.keys(sheets)[0];
+                renderExcelInterface();
+                loadSheetData(currentSheet);
+            });
+        }
+
+        function initializeSheetData(sheetId) {
+            const sheet = sheets[sheetId];
+            if (!sheet) return;
+            
+            const initialData = {};
+            for (let r = 0; r < sheet.rows; r++) {
+                initialData[r] = {};
+                for (let c = 0; c < sheet.cols; c++) initialData[r][c] = '';
+            }
+            initialData._mergedCells = [];
+            
+            db.ref(`sheetData/${sheetId}`).set(initialData);
+        }
+
+        // ==================== واجهة Excel الرئيسية ====================
+        function renderExcelInterface() {
+            const content = document.getElementById('dynamicContent');
+            if (!content) return;
+            
+            const isAdmin = currentUserRole === 'admin';
+            
+            let filesHTML = '';
+            Object.keys(excelFiles).forEach(fileId => {
+                const file = excelFiles[fileId];
+                const isActive = fileId === currentExcelFile;
+                filesHTML += `
+                    <div class="file-tab ${isActive ? 'active' : ''}" onclick="switchExcelFile('${fileId}')">
+                        <i class="fas fa-file-excel"></i>
+                        <span>${file.name}</span>
+                        ${isAdmin && Object.keys(excelFiles).length > 1 ? `
+                            <button class="file-close" onclick="event.stopPropagation(); deleteExcelFile('${fileId}')" style="width:22px; height:22px; border-radius:50%; border:none; background:rgba(255,255,255,0.2); color:white; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            let sheetsHTML = '';
+            Object.keys(sheets).forEach(sheetId => {
+                const sheet = sheets[sheetId];
+                const isActive = sheetId === currentSheet;
+                sheetsHTML += `
+                    <div class="sheet-tab ${isActive ? 'active' : ''}" onclick="switchSheet('${sheetId}')">
+                        <i class="fas fa-table"></i>
+                        <span>${sheet.name}</span>
+                        ${isAdmin && Object.keys(sheets).length > 1 ? `
+                            <button class="file-close" onclick="event.stopPropagation(); deleteSheet('${sheetId}')" style="width:22px; height:22px; border-radius:50%; border:none; background:rgba(255,255,255,0.2); color:white; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            if (isAdmin) {
+                content.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+                        <div class="files-bar">
+                            <span class="files-label"><i class="fas fa-folder-open"></i> الملفات</span>
+                            <div class="files-list">
+                                ${filesHTML}
+                                <button class="add-sheet-btn" onclick="document.getElementById('excelFile').click()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="sheets-bar">
+                            <span class="sheets-label"><i class="fas fa-table"></i> الأوراق</span>
+                            <div class="sheets-list">
+                                ${sheetsHTML}
+                                <button class="add-sheet-btn" onclick="showAddSheetModal()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="toolbar">
+                            <div class="tool-group">
+                                <button class="tool-btn btn-primary" onclick="downloadCurrentSheet()">
+                                    <i class="fas fa-download"></i><span>تحميل</span>
+                                </button>
+                                <button class="tool-btn btn-success" onclick="addRow()">
+                                    <i class="fas fa-plus-circle"></i><span>صف</span>
+                                </button>
+                                <button class="tool-btn btn-success" onclick="addColumn()">
+                                    <i class="fas fa-plus-circle"></i><span>عمود</span>
+                                </button>
+                                <button class="tool-btn btn-danger" onclick="deleteCurrentExcelFile()">
+                                    <i class="fas fa-trash"></i><span>حذف</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="permissions-panel">
+                            <div class="permissions-title">
+                                <i class="fas fa-user-shield"></i>
+                                <span>الصلاحيات</span>
+                            </div>
+                            
+                            <div class="permission-toggle">
+                                <span><i class="fas fa-eye"></i> المشاهد</span>
+                                <div class="toggle-switch ${userPermissions.view ? 'active' : ''}" onclick="togglePermission('view')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="permission-status" style="color: ${userPermissions.view ? 'var(--success)' : 'var(--gray-500)'}">
+                                    ${userPermissions.view ? '✓' : '✗'}
+                                </span>
+                            </div>
+                            
+                            <div class="permission-toggle">
+                                <span><i class="fas fa-pen"></i> المعدل</span>
+                                <div class="toggle-switch ${userPermissions.edit ? 'active' : ''}" onclick="togglePermission('edit')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="permission-status" style="color: ${userPermissions.edit ? 'var(--success)' : 'var(--gray-500)'}">
+                                    ${userPermissions.edit ? '✓' : '✗'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="workspace">
+                            <div class="table-container" id="tableContainer"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const canView = userPermissions.view;
+                const canEdit = userPermissions.edit;
+                
+                if (!canView) {
+                    content.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: var(--gray-50);">
+                            <div style="text-align: center; padding: 30px; max-width: 300px;">
+                                <i class="fas fa-lock" style="font-size: 48px; color: var(--gray-400); margin-bottom: 16px;"></i>
+                                <h3 style="font-size: 20px; font-weight: 800; color: var(--gray-700); margin-bottom: 8px;">لا تملك صلاحية الوصول</h3>
+                                <p style="color: var(--gray-500);">يرجى التواصل مع المدير</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                content.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+                        <div class="files-bar">
+                            <span class="files-label"><i class="fas fa-folder-open"></i> الملفات</span>
+                            <div class="files-list">${filesHTML}</div>
+                        </div>
+                        
+                        <div class="sheets-bar">
+                            <span class="sheets-label"><i class="fas fa-table"></i> الأوراق</span>
+                            <div class="sheets-list">${sheetsHTML}</div>
+                        </div>
+                        
+                        <div style="background: ${canEdit ? '#d1fae5' : '#fef3c7'}; padding: 10px 16px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px;">
+                            <i class="fas ${canEdit ? 'fa-pen' : 'fa-eye'}" style="color: ${canEdit ? 'var(--success)' : 'var(--warning)'};"></i>
+                            <span style="font-weight: 600; color: var(--gray-800); font-size: 13px;">
+                                ${canEdit ? 'لديك صلاحية التعديل' : 'لديك صلاحية المشاهدة فقط'}
+                            </span>
+                        </div>
+                        
+                        <div class="workspace">
+                            <div class="table-container" id="tableContainer"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderExcelTable();
+        }
+
+        // ==================== تبديل الصلاحيات ====================
+        function togglePermission(permType) {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ هذه الخاصية متاحة للمدير فقط', 'error');
+                return;
+            }
+            
+            userPermissions[permType] = !userPermissions[permType];
+            
+            db.ref('settings/permissions').set(userPermissions)
+                .then(() => {
+                    showNotification(`✅ تم ${userPermissions[permType] ? 'تفعيل' : 'تعطيل'} صلاحية ${permType === 'view' ? 'المشاهدة' : 'التعديل'}`, 'success');
+                    renderExcelInterface();
+                })
+                .catch(error => {
+                    showNotification('❌ خطأ في حفظ الصلاحيات', 'error');
+                });
+        }
+
+        // ==================== تبديل الملفات والأوراق ====================
+        function switchExcelFile(fileId) {
+            currentExcelFile = fileId;
+            loadSheetsForFile(fileId);
+            showNotification(`📁 ${excelFiles[fileId].name}`, 'success', 1000);
+        }
+
+        function switchSheet(sheetId) {
+            currentSheet = sheetId;
+            renderExcelInterface();
+            loadSheetData(sheetId);
+            showNotification(`📄 ${sheets[sheetId].name}`, 'success', 1000);
+        }
+
+        // ==================== تحميل بيانات الجدول ====================
+        function loadSheetData(sheetId) {
+            if (dataCache[sheetId]) {
+                currentSheetData = dataCache[sheetId];
+                mergedCells = currentSheetData._mergedCells || [];
+                renderExcelTable();
+                return;
+            }
+            
+            db.ref(`sheetData/${sheetId}`).on('value', snap => {
+                currentSheetData = snap.val() || {};
+                dataCache[sheetId] = currentSheetData;
+                mergedCells = currentSheetData._mergedCells || [];
+                renderExcelTable();
+            });
+        }
+
+        // ==================== رسم الجدول ====================
+        function renderExcelTable() {
+            const tableContainer = document.getElementById('tableContainer');
+            if (!tableContainer) return;
+            
+            const sheet = sheets[currentSheet];
+            if (!sheet) return;
+            
+            const isAdmin = currentUserRole === 'admin';
+            const canEdit = isAdmin || (userPermissions.view && userPermissions.edit);
+            
+            let html = `<table><thead><tr>`;
+            html += `<th class="row-header">#</th>`;
+            for (let c = 0; c < sheet.cols; c++) {
+                html += `<th>${String.fromCharCode(65 + c)}</th>`;
+            }
+            html += '</tr></thead><tbody>';
+            
+            for (let r = 0; r < sheet.rows; r++) {
+                html += '<tr>';
+                html += `<td class="row-header">${r + 1}</td>`;
+                
+                for (let c = 0; c < sheet.cols; c++) {
+                    const value = currentSheetData?.[r]?.[c] || '';
+                    
+                    html += `<td 
+                        ${canEdit ? 'contenteditable="true" class="editable-cell"' : 'class="view-only-cell"'}
+                        onblur="updateCell(${r}, ${c}, this.textContent)"
+                        ondblclick="this.focus()"
+                    >${value}</td>`;
+                }
+                html += '</tr>';
+            }
+            
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+        }
+
+        // ==================== تحديث الخلية ====================
+        function updateCell(row, col, value) {
+            const canEdit = currentUserRole === 'admin' || (userPermissions.view && userPermissions.edit);
+            if (!canEdit) {
+                showNotification('❌ ليس لديك صلاحية التعديل', 'error');
+                renderExcelTable();
+                return;
+            }
+            
+            const updates = {};
+            updates[`${row}/${col}`] = value;
+            updates[`${row}/${col}_editor`] = currentUser.email;
+            updates[`${row}/${col}_time`] = new Date().toISOString();
+            
+            db.ref(`sheetData/${currentSheet}`).update(updates);
+            if (dataCache[currentSheet]) {
+                dataCache[currentSheet][row][col] = value;
+            }
+            
+            if (currentUserRole === 'admin') {
+                db.ref('logs').push({
+                    user: currentUser.email,
+                    file: excelFiles[currentExcelFile]?.name,
+                    sheet: sheets[currentSheet]?.name,
+                    action: `تعديل ${String.fromCharCode(65 + col)}${row + 1}`,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        // ==================== عمليات الجدول ====================
+        function addRow() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه إضافة صفوف', 'error');
+                return;
+            }
+            
+            const sheet = sheets[currentSheet];
+            if (sheet.rows >= MAX_ROWS) {
+                showNotification(`⚠️ الحد الأقصى ${MAX_ROWS} صف`, 'warning');
+                return;
+            }
+            
+            sheet.rows++;
+            const newRow = {};
+            for (let c = 0; c < sheet.cols; c++) newRow[c] = '';
+            
+            db.ref(`sheets/${currentSheet}/rows`).set(sheet.rows);
+            db.ref(`sheetData/${currentSheet}/${sheet.rows - 1}`).set(newRow);
+            if (dataCache[currentSheet]) {
+                dataCache[currentSheet][sheet.rows - 1] = newRow;
+            }
+            
+            showNotification('✅ تم إضافة صف', 'success');
+        }
+
+        function addColumn() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه إضافة أعمدة', 'error');
+                return;
+            }
+            
+            const sheet = sheets[currentSheet];
+            if (sheet.cols >= MAX_COLS) {
+                showNotification(`⚠️ الحد الأقصى ${MAX_COLS} عمود`, 'warning');
+                return;
+            }
+            
+            sheet.cols++;
+            for (let r = 0; r < sheet.rows; r++) {
+                db.ref(`sheetData/${currentSheet}/${r}/${sheet.cols - 1}`).set('');
+                if (dataCache[currentSheet]) {
+                    dataCache[currentSheet][r][sheet.cols - 1] = '';
+                }
+            }
+            
+            db.ref(`sheets/${currentSheet}/cols`).set(sheet.cols);
+            showNotification('✅ تم إضافة عمود', 'success');
+        }
+
+        function deleteExcelFile(fileId) {
+            if (currentUserRole !== 'admin') return;
+            if (Object.keys(excelFiles).length <= 1) {
+                showNotification('❌ لا يمكن حذف الملف الأخير', 'error');
+                return;
+            }
+            
+            if (!confirm(`⚠️ حذف "${excelFiles[fileId].name}"؟`)) return;
+            
+            Object.keys(sheets).forEach(sheetId => {
+                if (sheets[sheetId].fileId === fileId) {
+                    db.ref(`sheets/${sheetId}`).remove();
+                    db.ref(`sheetData/${sheetId}`).remove();
+                    delete sheetsCache[fileId];
+                    delete dataCache[sheetId];
+                }
+            });
+            
+            delete excelFiles[fileId];
+            db.ref(`excelFiles/${fileId}`).remove();
+            
+            currentExcelFile = Object.keys(excelFiles)[0];
+            loadSheetsForFile(currentExcelFile);
+            showNotification('✅ تم حذف الملف', 'success');
+        }
+
+        function deleteCurrentExcelFile() {
+            deleteExcelFile(currentExcelFile);
+        }
+
+        function deleteSheet(sheetId) {
+            if (currentUserRole !== 'admin') return;
+            if (Object.keys(sheets).length <= 1) {
+                showNotification('❌ لا يمكن حذف الورقة الأخيرة', 'error');
+                return;
+            }
+            
+            if (!confirm(`⚠️ حذف "${sheets[sheetId].name}"؟`)) return;
+            
+            delete sheets[sheetId];
+            sheetsCache[currentExcelFile] = sheets;
+            db.ref(`sheets/${sheetId}`).remove();
+            db.ref(`sheetData/${sheetId}`).remove();
+            delete dataCache[sheetId];
+            
+            currentSheet = Object.keys(sheets)[0];
+            renderExcelInterface();
+            loadSheetData(currentSheet);
+            showNotification('✅ تم حذف الورقة', 'success');
+        }
+
+        // ==================== إدارة الأوراق ====================
+        function showAddSheetModal() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه إضافة أوراق', 'error');
+                return;
+            }
+            
+            document.getElementById('newSheetNameInput').value = `ورقة ${Object.keys(sheets).length + 1}`;
+            document.getElementById('addSheetModal').style.display = 'flex';
+        }
+
+        function createNewSheet() {
+            if (currentUserRole !== 'admin') return;
+            
+            const sheetName = document.getElementById('newSheetNameInput').value.trim();
+            if (!sheetName) {
+                showNotification('❌ يرجى إدخال اسم الورقة', 'error');
+                return;
+            }
+            
+            const sheetId = `sheet_${Date.now()}`;
+            const newSheet = {
+                id: sheetId,
+                name: sheetName,
+                rows: 50,
+                cols: 26,
+                fileId: currentExcelFile,
+                createdAt: new Date().toISOString()
+            };
+            
+            sheets[sheetId] = newSheet;
+            sheetsCache[currentExcelFile] = sheets;
+            db.ref(`sheets/${sheetId}`).set(newSheet);
+            initializeSheetData(sheetId);
+            
+            hideModal('addSheetModal');
+            switchSheet(sheetId);
+            showNotification(`✅ تم إنشاء "${sheetName}"`, 'success');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // ==================== رفع وتحميل Excel ====================
+        function uploadExcel() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه رفع الملفات', 'error');
+                return;
+            }
+            
+            const file = document.getElementById('excelFile').files[0];
+            if (!file) return;
+            
+            showNotification('⏳ جاري الرفع...', 'info');
+            
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    const fileId = 'file_' + Date.now();
+                    const fileName = file.name.replace('.xlsx', '').replace('.xls', '').substring(0, 20);
+                    
+                    const newExcelFile = {
+                        id: fileId,
+                        name: fileName,
+                        createdAt: new Date().toISOString(),
+                        createdBy: currentUser.email
+                    };
+                    
+                    excelFiles[fileId] = newExcelFile;
+                    db.ref(`excelFiles/${fileId}`).set(newExcelFile);
+                    
+                    let sheetsForFile = {};
+                    
+                    workbook.SheetNames.forEach((sheetName, index) => {
+                        const sheetId = `sheet_${Date.now()}_${index}`;
+                        const worksheet = workbook.Sheets[sheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+                        const merges = worksheet['!merges'] || [];
+                        const mergedCells = merges.map(merge => ({
+                            row: merge.s.r, col: merge.s.c,
+                            rowspan: merge.e.r - merge.s.r + 1,
+                            colspan: merge.e.c - merge.s.c + 1
+                        }));
+                        
+                        const cleanData = jsonData.filter(row => row.some(cell => cell !== ''));
+                        
+                        const newSheet = {
+                            id: sheetId,
+                            name: sheetName.substring(0, 20),
+                            rows: cleanData.length || 30,
+                            cols: cleanData.length > 0 ? Math.max(...cleanData.map(row => row.length), 20) : 20,
+                            fileId: fileId
+                        };
+                        
+                        sheetsForFile[sheetId] = newSheet;
+                        db.ref(`sheets/${sheetId}`).set(newSheet);
+                        
+                        const sheetData = {};
+                        cleanData.forEach((row, r) => {
+                            sheetData[r] = {};
+                            row.forEach((cell, c) => sheetData[r][c] = cell?.toString() || '');
+                        });
+                        sheetData._mergedCells = mergedCells;
+                        
+                        db.ref(`sheetData/${sheetId}`).set(sheetData);
+                        dataCache[sheetId] = sheetData;
+                    });
+                    
+                    sheetsCache[fileId] = sheetsForFile;
+                    showNotification(`✅ تم استيراد ${workbook.SheetNames.length} ورقة`, 'success');
+                    
+                    setTimeout(() => switchExcelFile(fileId), 500);
+                    document.getElementById('excelFile').value = '';
+                    
+                } catch (error) {
+                    showNotification('❌ خطأ في الملف', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function downloadCurrentSheet() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه تحميل الملفات', 'error');
+                return;
+            }
+            
+            const sheet = sheets[currentSheet];
+            const rows = [];
+            for (let r = 0; r < sheet.rows; r++) {
+                const row = [];
+                for (let c = 0; c < sheet.cols; c++) {
+                    row.push(currentSheetData?.[r]?.[c] || '');
+                }
+                rows.push(row);
+            }
+            
+            const worksheet = XLSX.utils.aoa_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name);
+            XLSX.writeFile(workbook, `${sheet.name}.xlsx`);
+            showNotification('✅ تم التحميل', 'success');
+        }
+
+        // ==================== إدارة التبويبات ====================
+        function switchMainTab(tab, element) {
+            if (tab !== 'excel' && currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه الوصول لهذا القسم', 'error');
+                return;
+            }
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            
+            if (tab === 'excel') {
+                renderExcelInterface();
+            } else if (tab === 'users') {
+                renderUsersManagement();
+            } else if (tab === 'logs') {
+                renderLogsViewer();
+            } else if (tab === 'backups') {
+                renderBackupsViewer();
+            }
+        }
+
+        // ==================== إدارة المستخدمين ====================
+        function renderUsersManagement() {
+            if (currentUserRole !== 'admin') return;
+            
+            const content = document.getElementById('dynamicContent');
+            content.innerHTML = `
+                <div class="users-container">
+                    <div class="users-header">
+                        <h2><i class="fas fa-users" style="color: var(--primary);"></i> إدارة المستخدمين</h2>
+                    </div>
+                    
+                    <div class="add-user-card">
+                        <h3 style="margin-bottom: 16px;"><i class="fas fa-user-plus" style="color: var(--success);"></i> إضافة مستخدم</h3>
+                        <div class="add-user-form">
+                            <input type="email" id="newUserEmail" class="login-input" placeholder="البريد الإلكتروني">
+                            <input type="password" id="newUserPassword" class="login-input" placeholder="كلمة المرور">
+                            <select id="newUserRole" class="role-select">
+                                <option value="view">👁️ مشاهد - مشاهدة فقط</option>
+                                <option value="edit">✏️ معدل - مشاهدة وتعديل</option>
+                                <option value="admin">👑 مدير - صلاحية كاملة</option>
+                            </select>
+                            <button class="tool-btn btn-success" onclick="addUser()" style="height: 52px;">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="users-list">
+                        <h3 style="margin-bottom: 16px;"><i class="fas fa-list"></i> قائمة المستخدمين</h3>
+                        <div id="usersListContainer"></div>
+                    </div>
+                </div>
+            `;
+            loadUsersList();
+        }
+
+        function loadUsersList() {
+            db.ref('users').once('value', snap => {
+                const users = snap.val() || {};
+                const container = document.getElementById('usersListContainer');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                Object.entries(users).forEach(([uid, user]) => {
+                    const isCurrentUser = uid === currentUser.uid;
+                    const roleIcon = user.role === 'admin' ? '👑' : user.role === 'edit' ? '✏️' : '👁️';
+                    const roleName = user.role === 'admin' ? 'مدير' : user.role === 'edit' ? 'معدل' : 'مشاهد';
+                    
+                    container.innerHTML += `
+                        <div class="user-item" style="border: ${isCurrentUser ? '2px solid var(--primary)' : 'none'};">
+                            <div class="user-info">
+                                <div style="font-weight: 700; margin-bottom: 6px;">
+                                    ${user.email} ${isCurrentUser ? '<span style="background: var(--primary); color: white; padding: 2px 10px; border-radius: 40px; font-size: 12px; margin-right: 8px;">أنت</span>' : ''}
+                                </div>
+                                <div>
+                                    <span style="background: ${user.role === 'admin' ? '#fee2e2' : user.role === 'edit' ? '#dbeafe' : '#fef3c7'}; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;">
+                                        ${roleIcon} ${roleName}
+                                    </span>
+                                </div>
+                                <div style="color: var(--gray-500); font-size: 12px; margin-top: 6px;">
+                                    <i class="fas fa-calendar"></i> ${new Date(user.createdAt).toLocaleDateString('ar-EG')}
+                                </div>
+                            </div>
+                            ${!isCurrentUser ? `
+                                <button class="delete-user-btn" onclick="deleteUser('${uid}')" style="background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <i class="fas fa-trash"></i> حذف		
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function addUser() {
+            if (currentUserRole !== 'admin') return;
+            
+            const email = document.getElementById('newUserEmail').value.trim();
+            const password = document.getElementById('newUserPassword').value.trim();
+            const role = document.getElementById('newUserRole').value;
+            
+            if (!email || !password) {
+                showNotification('❌ يرجى إدخال البريد وكلمة المرور', 'error');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showNotification('❌ كلمة المرور 8 أحرف على الأقل', 'error');
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(cred => {
+                    return db.ref(`users/${cred.user.uid}`).set({
+                        email: email,
+                        role: role,
+                        createdBy: currentUser.email,
+                        createdAt: new Date().toISOString()
+                    });
+                })
+                .then(() => {
+                    showNotification('✅ تم إضافة المستخدم', 'success');
+                    document.getElementById('newUserEmail').value = '';
+                    document.getElementById('newUserPassword').value = '';
+                    loadUsersList();
+                })
+                .catch(error => {
+                    if (error.code === 'auth/email-already-in-use') {
+                        showNotification('❌ البريد الإلكتروني مستخدم بالفعل', 'error');
+                    } else {
+                        showNotification('❌ ' + error.message, 'error');
+                    }
+                });
+        }
+
+        function deleteUser(uid) {
+            if (!confirm('⚠️ حذف المستخدم؟')) return;
+            
+            db.ref(`users/${uid}`).remove()
+                .then(() => {
+                    showNotification('✅ تم حذف المستخدم', 'success');
+                    loadUsersList();
+                });
+        }
+
+        // ==================== سجل التعديلات ====================
+        function renderLogsViewer() {
+            if (currentUserRole !== 'admin') return;
+            
+            const content = document.getElementById('dynamicContent');
+            content.innerHTML = `
+                <div class="logs-container">
+                    <div class="logs-header">
+                        <h2><i class="fas fa-history" style="color: var(--primary);"></i> سجل التعديلات</h2>
+                    </div>
+                    <div class="logs-list" id="logsListContainer"></div>
+                </div>
+            `;
+            loadLogs();
+        }
+
+        function loadLogs() {
+            db.ref('logs').orderByChild('timestamp').limitToLast(100).on('value', snap => {
+                const logs = snap.val() || {};
+                const container = document.getElementById('logsListContainer');
+                if (!container) return;
+                
+                if (Object.keys(logs).length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--gray-500); padding: 30px;">لا توجد تعديلات بعد</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                Object.values(logs).reverse().forEach(log => {
+                    const date = new Date(log.timestamp);
+                    container.innerHTML += `
+                        <div class="log-item">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span style="font-weight: 700; color: var(--primary);">${log.user}</span>
+                                <span style="color: var(--gray-500); font-size: 12px;">${date.toLocaleString('ar-EG')}</span>
+                            </div>
+                            <div style="color: var(--gray-700);">${log.action}</div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        // ==================== النسخ الاحتياطية ====================
+        function renderBackupsViewer() {
+            if (currentUserRole !== 'admin') return;
+            
+            const content = document.getElementById('dynamicContent');
+            content.innerHTML = `
+                <div class="backups-container">
+                    <div class="backups-header">
+                        <h2><i class="fas fa-archive" style="color: var(--purple);"></i> النسخ الاحتياطية</h2>
+                    </div>
+                    
+                    <button class="create-backup-btn" onclick="createBackup()">
+                        <i class="fas fa-save"></i> إنشاء نسخة احتياطية
+                    </button>
+                    
+                    <div class="backups-list" id="backupsListContainer"></div>
+                </div>
+            `;
+            loadBackups();
+        }
+
+        function loadBackups() {
+            db.ref(`backups/${currentExcelFile}`).orderByChild('createdAt').once('value', snap => {
+                const backups = snap.val() || {};
+                const container = document.getElementById('backupsListContainer');
+                if (!container) return;
+                
+                if (Object.keys(backups).length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--gray-500); padding: 30px;">لا توجد نسخ احتياطية</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                Object.values(backups).reverse().forEach(backup => {
+                    const date = new Date(backup.createdAt);
+                    container.innerHTML += `
+                        <div class="backup-item">
+                            <div class="backup-info">
+                                <span style="font-weight: 700; color: var(--purple);">${backup.name}</span>
+                                <div class="backup-details">
+                                    <span>${backup.fileName}</span>
+                                    <span>${backup.sheetName}</span>
+                                    <span>${backup.createdBy}</span>
+                                    <span>${date.toLocaleString('ar-EG')}</span>
+                                </div>
+                            </div>
+                            <button class="restore-backup-btn" onclick="restoreBackup('${backup.id}')">
+                                <i class="fas fa-undo"></i> استعادة
+                            </button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function createBackup() {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه إنشاء نسخ', 'error');
+                return;
+            }
+            
+            const backupId = `backup_${Date.now()}`;
+            const backupName = `نسخة ${new Date().toLocaleDateString('ar-EG')}`;
+            
+            const backupData = {
+                id: backupId,
+                name: backupName,
+                fileId: currentExcelFile,
+                fileName: excelFiles[currentExcelFile]?.name,
+                sheetId: currentSheet,
+                sheetName: sheets[currentSheet]?.name,
+                data: currentSheetData,
+                createdBy: currentUser.email,
+                createdAt: new Date().toISOString()
+            };
+            
+            db.ref(`backups/${currentExcelFile}/${backupId}`).set(backupData)
+                .then(() => {
+                    showNotification('✅ تم إنشاء نسخة احتياطية', 'success');
+                    if (document.querySelector('.tab.active').innerHTML.includes('النسخ')) {
+                        loadBackups();
+                    }
+                });
+        }
+
+        function restoreBackup(backupId) {
+            if (currentUserRole !== 'admin') {
+                showNotification('❌ فقط المدير يمكنه استعادة النسخ', 'error');
+                return;
+            }
+            
+            if (!confirm('⚠️ استعادة هذه النسخة؟')) return;
+            
+            db.ref(`backups/${currentExcelFile}/${backupId}`).once('value', snap => {
+                const backup = snap.val();
+                if (backup) {
+                    db.ref(`sheetData/${currentSheet}`).set(backup.data)
+                        .then(() => {
+                            showNotification('✅ تم استعادة النسخة', 'success');
+                            if (dataCache[currentSheet]) {
+                                dataCache[currentSheet] = backup.data;
+                            }
+                        });
+                }
+            });
+        }
+
+        // ==================== الإشعارات ====================
+        function showNotification(message, type = 'info', duration = 2500) {
+            const notification = document.getElementById('notification');
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 
+                        type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+            
+            notification.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+            notification.style.background = type === 'success' ? 'var(--success)' : 
+                                           type === 'error' ? 'var(--danger)' : 
+                                           type === 'warning' ? 'var(--warning)' : 'var(--info)';
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // معالجة أخطاء Firebase
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Firebase Error:', event.reason);
+        });
     </script>
 </body>
 </html>
