@@ -109,6 +109,11 @@
             transition: all 0.3s;
         }
 
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .login-btn {
             width: 100%;
             padding: 14px;
@@ -119,6 +124,12 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         /* ===== شريط العنوان العلوي ===== */
@@ -197,6 +208,11 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         /* ===== شريط التبويبات ===== */
@@ -232,6 +248,12 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+            background: var(--gray-50);
         }
 
         .tab.active {
@@ -252,9 +274,174 @@
             gap: 8px;
             cursor: pointer;
             white-space: nowrap;
+            transition: all 0.3s;
         }
 
-        /* ===== صفحة اختيار الملفات والأوراق - الصفحة الرئيسية ===== */
+        .upload-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ===== شريط البحث - للصفحة الرئيسية ===== */
+        .search-bar {
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 40px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 108, 62, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 16px;
+        }
+
+        .search-clear {
+            position: absolute;
+            left: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 14px;
+            display: none;
+            width: 20px;
+            height: 20px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--gray-200);
+        }
+
+        .search-clear:hover {
+            background: var(--gray-300);
+            color: var(--gray-600);
+        }
+
+        .search-results-count {
+            color: var(--gray-500);
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ===== شريط البحث في الجدول - جديد ===== */
+        .table-search-bar {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f2ff 100%);
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .table-search-wrapper {
+            flex: 1;
+            position: relative;
+            max-width: 500px;
+        }
+
+        .table-search-input {
+            width: 100%;
+            padding: 10px 40px 10px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 40px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .table-search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 108, 62, 0.1);
+        }
+
+        .table-search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 14px;
+        }
+
+        .table-search-clear {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 12px;
+            display: none;
+            width: 18px;
+            height: 18px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--gray-200);
+        }
+
+        .table-search-clear:hover {
+            background: var(--gray-300);
+            color: var(--gray-600);
+        }
+
+        .table-search-results {
+            color: var(--gray-600);
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 2px solid var(--gray-200);
+        }
+
+        /* ===== تمييز نتائج البحث في الجدول ===== */
+        .highlight-cell {
+            background: #fef3c7 !important;
+            font-weight: 700;
+            color: var(--gray-900);
+            border: 2px solid var(--warning) !important;
+        }
+
+        .current-highlight {
+            background: #fbbf24 !important;
+            color: white;
+            border: 2px solid var(--warning) !important;
+        }
+
+        /* ===== صفحة اختيار الملفات والأوراق ===== */
         .selection-page {
             flex: 1;
             overflow-y: auto;
@@ -282,15 +469,15 @@
 
         .files-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
         }
 
         .file-card {
             background: var(--gray-50);
             border: 2px solid var(--gray-200);
             border-radius: 12px;
-            padding: 10px;
+            padding: 14px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
@@ -299,37 +486,50 @@
         .file-card:hover {
             border-color: var(--primary);
             background: var(--gray-100);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .file-card.active {
             border-color: var(--primary);
             background: #e6f7ed;
+            box-shadow: 0 4px 12px rgba(15, 108, 62, 0.2);
+        }
+
+        .file-card.hidden {
+            display: none;
         }
 
         .file-card-icon {
-            font-size: 48px;
+            font-size: 36px;
             color: var(--primary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
         .file-card-name {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--gray-900);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .file-card-info {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--gray-500);
+            text-align: center;
         }
 
         .file-delete-btn {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 32px;
-            height: 32px;
+            top: 8px;
+            left: 8px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: var(--danger);
             color: white;
@@ -339,11 +539,18 @@
             justify-content: center;
             cursor: pointer;
             opacity: 0.8;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .file-delete-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         .sheets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 12px;
         }
 
@@ -351,7 +558,7 @@
             background: var(--gray-50);
             border: 2px solid var(--gray-200);
             border-radius: 12px;
-            padding: 10px;
+            padding: 14px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
@@ -360,11 +567,18 @@
         .sheet-card:hover {
             border-color: var(--primary);
             background: var(--gray-100);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .sheet-card.active {
             border-color: var(--primary);
             background: #e6f7ed;
+            box-shadow: 0 4px 12px rgba(15, 108, 62, 0.2);
+        }
+
+        .sheet-card.hidden {
+            display: none;
         }
 
         .sheet-card-name {
@@ -374,12 +588,16 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .sheet-card-info {
-            font-size: 16px;
+            font-size: 12px;
             color: var(--gray-500);
+            text-align: center;
         }
 
         .add-card {
@@ -394,22 +612,24 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.3s;
-            min-height: 150px;
+            min-height: 120px;
         }
 
         .add-card:hover {
             border-color: var(--primary);
             background: var(--gray-100);
+            transform: translateY(-2px);
         }
 
         .add-card i {
-            font-size: 32px;
+            font-size: 28px;
             color: var(--primary);
         }
 
         .add-card span {
             font-weight: 600;
             color: var(--gray-700);
+            font-size: 13px;
         }
 
         .open-table-btn {
@@ -427,6 +647,12 @@
             justify-content: center;
             gap: 12px;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .open-table-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .open-table-btn:disabled {
@@ -434,7 +660,7 @@
             cursor: not-allowed;
         }
 
-        /* ===== صفحة الجدول المستقلة - ملء الشاشة ===== */
+        /* ===== صفحة الجدول المستقلة ===== */
         .table-page {
             position: fixed;
             top: 0;
@@ -479,6 +705,11 @@
             justify-content: center;
             cursor: pointer;
             font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         .table-title {
@@ -515,6 +746,11 @@
             justify-content: center;
             cursor: pointer;
             font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .table-action-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         /* ===== شريط الأدوات للجدول ===== */
@@ -541,6 +777,12 @@
             cursor: pointer;
             color: white;
             white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .btn-primary { background: var(--primary); }
@@ -591,6 +833,7 @@
             background: var(--gray-300);
             border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         .toggle-switch.active {
@@ -662,6 +905,16 @@
             white-space: nowrap;
             background: white;
             font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        td:hover {
+            background: var(--gray-50);
+        }
+
+        td:focus {
+            outline: 2px solid var(--primary);
+            background: #fef3c7;
         }
 
         .row-header {
@@ -711,6 +964,13 @@
             border-radius: 12px;
             font-size: 14px;
             background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .user-item {
@@ -723,7 +983,47 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
+            transition: all 0.3s;
         }
+
+        .user-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* تحسين أزرار الصلاحيات */
+        .role-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-300);
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+        }
+
+        .role-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .role-btn.active {
+            border-color: var(--primary);
+            background: #e6f7ed;
+            color: var(--primary);
+        }
+
+        .role-btn.admin-role { border-color: var(--danger); }
+        .role-btn.admin-role.active { background: #fee2e2; color: var(--danger); border-color: var(--danger); }
+
+        .role-btn.edit-role { border-color: var(--secondary); }
+        .role-btn.edit-role.active { background: #dbeafe; color: var(--secondary); border-color: var(--secondary); }
+
+        .role-btn.view-role { border-color: var(--warning); }
+        .role-btn.view-role.active { background: #fef3c7; color: var(--warning); border-color: var(--warning); }
 
         /* ===== سجل التعديلات ===== */
         .logs-container {
@@ -753,6 +1053,11 @@
         .log-item {
             padding: 16px;
             border-bottom: 1px solid var(--gray-200);
+            transition: all 0.3s;
+        }
+
+        .log-item:hover {
+            background: var(--gray-50);
         }
 
         /* ===== النسخ الاحتياطية ===== */
@@ -787,6 +1092,12 @@
             gap: 8px;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .create-backup-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
         }
 
         .backup-item {
@@ -799,6 +1110,11 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .backup-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .backup-details {
@@ -821,6 +1137,12 @@
             align-items: center;
             gap: 6px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restore-backup-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         /* ===== الإشعارات ===== */
@@ -840,6 +1162,18 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-width: 400px;
             margin: 0 auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* ===== تحسينات الهاتف المحمول ===== */
@@ -849,7 +1183,7 @@
             }
             
             .files-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
 
@@ -898,11 +1232,11 @@
             }
             
             .files-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
             
             .sheets-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
             
             .table-toolbar {
@@ -948,6 +1282,24 @@
                 width: 6px;
                 height: 6px;
             }
+
+            .search-bar {
+                padding: 12px 16px;
+            }
+
+            .search-input {
+                padding: 10px 40px 10px 14px;
+                font-size: 14px;
+            }
+
+            .table-search-bar {
+                padding: 10px 12px;
+            }
+
+            .table-search-input {
+                padding: 8px 36px 8px 14px;
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -985,6 +1337,23 @@
             
             .table-title-sub {
                 display: none;
+            }
+
+            .files-grid, .sheets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .file-card-icon {
+                font-size: 28px;
+            }
+
+            .file-card-name, .sheet-card-name {
+                font-size: 12px;
+            }
+
+            .table-search-results {
+                font-size: 11px;
+                padding: 4px 10px;
             }
         }
 
@@ -1077,6 +1446,7 @@
         
         <div id="tablePageToolbar"></div>
         <div id="tablePagePermissions"></div>
+        <div id="tablePageSearch"></div>
         
         <div class="table-container" id="tablePageContainer"></div>
     </div>
@@ -1100,14 +1470,14 @@
         // ==================== إعدادات Firebase ====================
         const firebaseConfig = {
             apiKey: "AIzaSyB6n_O1GZkJrvY0qrnSg-LFRjoOaqKKDd8",
-  authDomain: "dataexcel-72c92.firebaseapp.com",
-  databaseURL: "https://dataexcel-72c92-default-rtdb.firebaseio.com",
-  projectId: "dataexcel-72c92",
-  storageBucket: "dataexcel-72c92.firebasestorage.app",
-  messagingSenderId: "33675725947",
-  appId: "1:33675725947:web:8288d29447dfc78a6f26de",
-  measurementId: "G-0XLZ7F7BEL"
-};
+            authDomain: "dataexcel-72c92.firebaseapp.com",
+            databaseURL: "https://dataexcel-72c92-default-rtdb.firebaseio.com",
+            projectId: "dataexcel-72c92",
+            storageBucket: "dataexcel-72c92.firebasestorage.app",
+            messagingSenderId: "33675725947",
+            appId: "1:33675725947:web:8288d29447dfc78a6f26de",
+            measurementId: "G-0XLZ7F7BEL"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -1124,6 +1494,10 @@
         let mergedCells = [];
         let sheetsCache = {};
         let dataCache = {};
+        
+        // متغيرات البحث في الجدول
+        let tableSearchMatches = [];
+        let currentSearchIndex = -1;
         
         let userPermissions = {
             view: true,
@@ -1301,6 +1675,181 @@
             db.ref(`sheetData/${sheetId}`).set(initialData);
         }
 
+        // ==================== وظيفة البحث في الصفحة الرئيسية ====================
+        function searchFiles(query) {
+            query = query.toLowerCase().trim();
+            const fileCards = document.querySelectorAll('.file-card:not(.add-card)');
+            const sheetCards = document.querySelectorAll('.sheet-card:not(.add-card)');
+            
+            let filesCount = 0;
+            let sheetsCount = 0;
+            
+            fileCards.forEach(card => {
+                const name = card.querySelector('.file-card-name')?.textContent.toLowerCase() || '';
+                if (query === '' || name.includes(query)) {
+                    card.classList.remove('hidden');
+                    filesCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            sheetCards.forEach(card => {
+                const name = card.querySelector('.sheet-card-name')?.textContent.toLowerCase() || '';
+                if (query === '' || name.includes(query)) {
+                    card.classList.remove('hidden');
+                    sheetsCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            const resultsCount = document.getElementById('searchResultsCount');
+            if (resultsCount) {
+                if (query === '') {
+                    resultsCount.textContent = '';
+                } else {
+                    resultsCount.textContent = `${filesCount + sheetsCount} نتيجة`;
+                }
+            }
+            
+            const clearBtn = document.querySelector('.search-clear');
+            if (clearBtn) {
+                clearBtn.style.display = query ? 'flex' : 'none';
+            }
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                searchFiles('');
+            }
+        }
+
+        // ==================== وظيفة البحث في الجدول - جديدة ===== ==============
+        function searchInTable(query) {
+            query = query.toLowerCase().trim();
+            
+            // مسح التمييزات السابقة
+            const allCells = document.querySelectorAll('td');
+            allCells.forEach(cell => {
+                cell.classList.remove('highlight-cell', 'current-highlight');
+            });
+            
+            tableSearchMatches = [];
+            currentSearchIndex = -1;
+            
+            const clearBtn = document.querySelector('.table-search-clear');
+            if (clearBtn) {
+                clearBtn.style.display = query ? 'flex' : 'none';
+            }
+            
+            if (query === '') {
+                updateSearchResults();
+                return;
+            }
+            
+            // البحث في كل الخلايا
+            const sheet = sheets[currentSheet];
+            if (!sheet) return;
+            
+            for (let r = 0; r < sheet.rows; r++) {
+                for (let c = 0; c < sheet.cols; c++) {
+                    const value = (currentSheetData?.[r]?.[c] || '').toString().toLowerCase();
+                    if (value.includes(query)) {
+                        tableSearchMatches.push({ row: r, col: c });
+                    }
+                }
+            }
+            
+            // تمييز كل النتائج
+            tableSearchMatches.forEach(match => {
+                const cell = getCellElement(match.row, match.col);
+                if (cell) {
+                    cell.classList.add('highlight-cell');
+                }
+            });
+            
+            // الانتقال للنتيجة الأولى
+            if (tableSearchMatches.length > 0) {
+                currentSearchIndex = 0;
+                highlightCurrentMatch();
+            }
+            
+            updateSearchResults();
+        }
+
+        function clearTableSearch() {
+            const searchInput = document.getElementById('tableSearchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInTable('');
+            }
+        }
+
+        function nextSearchMatch() {
+            if (tableSearchMatches.length === 0) return;
+            
+            currentSearchIndex = (currentSearchIndex + 1) % tableSearchMatches.length;
+            highlightCurrentMatch();
+        }
+
+        function previousSearchMatch() {
+            if (tableSearchMatches.length === 0) return;
+            
+            currentSearchIndex = currentSearchIndex - 1;
+            if (currentSearchIndex < 0) {
+                currentSearchIndex = tableSearchMatches.length - 1;
+            }
+            highlightCurrentMatch();
+        }
+
+        function highlightCurrentMatch() {
+            // إزالة التمييز الحالي
+            const allCells = document.querySelectorAll('td');
+            allCells.forEach(cell => {
+                cell.classList.remove('current-highlight');
+            });
+            
+            if (currentSearchIndex >= 0 && currentSearchIndex < tableSearchMatches.length) {
+                const match = tableSearchMatches[currentSearchIndex];
+                const cell = getCellElement(match.row, match.col);
+                if (cell) {
+                    cell.classList.add('current-highlight');
+                    // التمرير للخلية
+                    cell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }
+            }
+            
+            updateSearchResults();
+        }
+
+        function getCellElement(row, col) {
+            const table = document.querySelector('#tablePageContainer table');
+            if (!table) return null;
+            
+            const rows = table.querySelectorAll('tbody tr');
+            if (row >= rows.length) return null;
+            
+            const cells = rows[row].querySelectorAll('td');
+            // +1 لأن العمود الأول هو رقم الصف
+            if (col + 1 >= cells.length) return null;
+            
+            return cells[col + 1];
+        }
+
+        function updateSearchResults() {
+            const resultsDiv = document.querySelector('.table-search-results');
+            if (!resultsDiv) return;
+            
+            if (tableSearchMatches.length === 0) {
+                resultsDiv.textContent = '';
+            } else {
+                resultsDiv.textContent = `${currentSearchIndex + 1} / ${tableSearchMatches.length}`;
+            }
+        }
+
         // ==================== صفحة اختيار الملفات والأوراق ====================
         function renderSelectionPage() {
             const content = document.getElementById('dynamicContent');
@@ -1384,6 +1933,17 @@
             }
             
             content.innerHTML = `
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن ملف أو ورقة..." oninput="searchFiles(this.value)">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-clear" onclick="clearSearch()">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="search-results-count" id="searchResultsCount"></div>
+                </div>
+                
                 <div class="selection-page">
                     <div class="selection-section">
                         <div class="section-title">
@@ -1419,7 +1979,6 @@
             showNotification(`✅ تم اختيار: ${excelFiles[fileId].name}`, 'success', 1500);
         }
 
-        // ==================== التحسين: فتح تلقائي للورقة ====================
         function selectSheet(sheetId) {
             currentSheet = sheetId;
             showNotification(`✅ فتح: ${sheets[sheetId].name}`, 'success', 1000);
@@ -1438,7 +1997,6 @@
             
             const isAdmin = currentUserRole === 'admin';
             
-            // أزرار الإجراءات
             let actionsHTML = '';
             if (isAdmin) {
                 actionsHTML = `
@@ -1452,7 +2010,6 @@
             }
             document.getElementById('tablePageActions').innerHTML = actionsHTML;
             
-            // شريط الأدوات
             let toolbarHTML = '';
             if (isAdmin) {
                 toolbarHTML = `
@@ -1471,7 +2028,6 @@
             }
             document.getElementById('tablePageToolbar').innerHTML = toolbarHTML;
             
-            // لوحة الصلاحيات
             let permissionsHTML = '';
             if (isAdmin) {
                 permissionsHTML = `
@@ -1515,12 +2071,36 @@
             }
             document.getElementById('tablePagePermissions').innerHTML = permissionsHTML;
             
+            // شريط البحث في الجدول
+            const searchHTML = `
+                <div class="table-search-bar">
+                    <div class="table-search-wrapper">
+                        <input type="text" id="tableSearchInput" class="table-search-input" placeholder="ابحث في الجدول..." oninput="searchInTable(this.value)">
+                        <i class="fas fa-search table-search-icon"></i>
+                        <div class="table-search-clear" onclick="clearTableSearch()">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="table-search-results"></div>
+                    <button class="tool-btn btn-primary" onclick="previousSearchMatch()" style="padding: 8px 12px; border-radius: 50%;" title="السابق">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="tool-btn btn-primary" onclick="nextSearchMatch()" style="padding: 8px 12px; border-radius: 50%;" title="التالي">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('tablePageSearch').innerHTML = searchHTML;
+            
             document.getElementById('tablePage').classList.add('active');
             loadSheetData(currentSheet);
         }
 
         function closeTablePage() {
             document.getElementById('tablePage').classList.remove('active');
+            // مسح البحث عند الإغلاق
+            tableSearchMatches = [];
+            currentSearchIndex = -1;
         }
 
         // ==================== تحميل بيانات الجدول ====================
@@ -1576,6 +2156,12 @@
             
             html += '</tbody></table>';
             tableContainer.innerHTML = html;
+            
+            // إعادة تطبيق البحث إذا كان موجوداً
+            const searchInput = document.getElementById('tableSearchInput');
+            if (searchInput && searchInput.value) {
+                searchInTable(searchInput.value);
+            }
         }
 
         // ==================== تحديث الخلية ====================
@@ -1967,15 +2553,18 @@
                                 ${!isCurrentUser ? `
                                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
                                         <button onclick="changeUserRole('${uid}', 'admin')" 
-                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'admin' ? 'var(--danger)' : 'var(--gray-300)'}; background: ${user.role === 'admin' ? '#fee2e2' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            class="role-btn admin-role ${user.role === 'admin' ? 'active' : ''}"
+                                            title="تعيين كمدير">
                                             <i class="fas fa-crown"></i> مدير
                                         </button>
                                         <button onclick="changeUserRole('${uid}', 'edit')" 
-                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'edit' ? 'var(--secondary)' : 'var(--gray-300)'}; background: ${user.role === 'edit' ? '#dbeafe' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            class="role-btn edit-role ${user.role === 'edit' ? 'active' : ''}"
+                                            title="تعيين كمعدل">
                                             <i class="fas fa-pen"></i> معدل
                                         </button>
                                         <button onclick="changeUserRole('${uid}', 'view')" 
-                                            style="padding: 6px 12px; border-radius: 8px; border: 2px solid ${user.role === 'view' ? 'var(--warning)' : 'var(--gray-300)'}; background: ${user.role === 'view' ? '#fef3c7' : 'white'}; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                            class="role-btn view-role ${user.role === 'view' ? 'active' : ''}"
+                                            title="تعيين كمشاهد">
                                             <i class="fas fa-eye"></i> مشاهد
                                         </button>
                                     </div>
@@ -1992,35 +2581,50 @@
             });
         }
 
-        // ==================== التحسين: تغيير صلاحيات المستخدم ====================
+        // ==================== إصلاح وظيفة تغيير صلاحيات المستخدم الفردية ====================
         function changeUserRole(uid, newRole) {
             if (currentUserRole !== 'admin') {
                 showNotification('❌ فقط المدير يمكنه تغيير الصلاحيات', 'error');
                 return;
             }
             
-            db.ref(`users/${uid}`).once('value', snap => {
-                const user = snap.val();
-                if (user && user.role === newRole) {
-                    showNotification('ℹ️ المستخدم لديه هذه الصلاحية بالفعل', 'info');
-                    return;
-                }
-                
-                const roleNames = {
-                    'admin': 'مدير',
-                    'edit': 'معدل',
-                    'view': 'مشاهد'
-                };
-                
-                db.ref(`users/${uid}/role`).set(newRole)
-                    .then(() => {
-                        showNotification(`✅ تم تغيير الصلاحية إلى: ${roleNames[newRole]}`, 'success');
+            // التحقق من الحالة الحالية للمستخدم
+            db.ref(`users/${uid}`).once('value')
+                .then(snap => {
+                    const user = snap.val();
+                    if (!user) {
+                        showNotification('❌ المستخدم غير موجود', 'error');
+                        return Promise.reject('User not found');
+                    }
+                    
+                    if (user.role === newRole) {
+                        showNotification('ℹ️ المستخدم لديه هذه الصلاحية بالفعل', 'info', 1500);
+                        return Promise.reject('Same role');
+                    }
+                    
+                    // تحديث الصلاحية
+                    return db.ref(`users/${uid}/role`).set(newRole);
+                })
+                .then(() => {
+                    const roleNames = {
+                        'admin': 'مدير',
+                        'edit': 'معدل',
+                        'view': 'مشاهد'
+                    };
+                    
+                    showNotification(`✅ تم تغيير الصلاحية إلى: ${roleNames[newRole]}`, 'success');
+                    
+                    // إعادة تحميل قائمة المستخدمين لتحديث الواجهة
+                    setTimeout(() => {
                         loadUsersList();
-                    })
-                    .catch(error => {
+                    }, 300);
+                })
+                .catch(error => {
+                    if (error !== 'Same role' && error !== 'User not found') {
+                        console.error('Error changing role:', error);
                         showNotification('❌ خطأ في تغيير الصلاحية', 'error');
-                    });
-            });
+                    }
+                });
         }
 
         function addUser() {
